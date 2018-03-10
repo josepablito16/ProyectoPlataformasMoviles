@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "535173320631",
+    "firebase_url": "https://proyectoplataformas-6b708.firebaseio.com",
+    "project_id": "proyectoplataformas-6b708",
+    "storage_bucket": "proyectoplataformas-6b708.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535173320631:android:5b588d8ceef5ac2a",
+        "android_client_info": {
+          "package_name": "com.cracks.proyectoplataformasmoviles"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535173320631-shrjac29ob2kiace9kcbbqdst123of29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIfJuPEZrmWX2X8l0GahG7dja91JNTEP8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
