@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 
 public class Configuracion extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
@@ -19,6 +20,22 @@ public class Configuracion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
+
+        NumberPicker np = (NumberPicker) findViewById(R.id.np);
+
+        int minimo = 1;
+        int maximo = 10;
+
+        np.setMinValue(minimo);
+        np.setMaxValue(maximo);
+        np.setWrapSelectorWheel(true);
+
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+
+            }
+        });
 
         foto_gallery = (ImageView)findViewById(R.id.imageView);
         boton = (Button)findViewById(R.id.button2);
