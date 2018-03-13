@@ -23,8 +23,11 @@ public class Configuracion extends AppCompatActivity {
 
         NumberPicker np = (NumberPicker) findViewById(R.id.np);
 
-        np.setMinValue(1);
-        np.setMaxValue(10);
+        int minimo = 1;
+        int maximo = 10;
+
+        np.setMinValue(minimo);
+        np.setMaxValue(maximo);
         np.setWrapSelectorWheel(true);
 
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
