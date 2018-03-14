@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
         };
 
         //Inicia la implmementacion si el usuario desea hostear una sesion.
-        CheckBox checkBox = findViewById(R.id.checkBox);
+        final CheckBox checkBox = findViewById(R.id.checkBox);
 
         Switch sw = findViewById(R.id.switch_login);
 
@@ -103,6 +103,8 @@ public class Login extends AppCompatActivity {
                     continueBtn.setText("Register");
                     loginTV.setText("Create Account");
 
+
+
                     //PONER AQUI LA IMPLEMENTACION PARA REGISTRAR UN USUARIO
 
                 } else {
@@ -117,7 +119,33 @@ public class Login extends AppCompatActivity {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ingresar();
+                if (checkBox.isChecked())
+                {
+                    EditText usernameText = findViewById(R.id.username_text);
+                    EditText passwordText = findViewById(R.id.password_text);
+
+                    final String email = usernameText.getText().toString();
+                    final String contra = passwordText.getText().toString();
+                    //no tiene usuario
+                    if (!email.isEmpty() && !contra.isEmpty())
+                    {
+                        //si no estan vacios
+                        mAuth.createUserWithEmailAndPassword(email,contra);
+                        checkBox.setChecked(false);
+
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+                else
+                {
+                    ingresar();
+
+                }
+
 
             }
         });
