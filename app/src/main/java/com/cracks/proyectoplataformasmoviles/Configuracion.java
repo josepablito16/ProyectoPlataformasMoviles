@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class Configuracion extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
     ImageView foto_gallery;
     Button boton;
+    Button boton1;
+    TextView number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +42,24 @@ public class Configuracion extends AppCompatActivity {
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-
+                number.setText(newVal);
             }
         });
 
         foto_gallery = (ImageView)findViewById(R.id.imageView);
-        boton = (Button)findViewById(R.id.button2);
+        boton = (Button)findViewById(R.id.btnImage);
+        boton1 = (Button)findViewById(R.id.btnNext);
+        number = (TextView)findViewById(R.id.txtNumber);
+
+        boton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Configuracion.this, SalaEspera.class);
+                intent.putExtra("persona", number.getText());
+                startActivityForResult(intent, 1);
+            }
+        });
+
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
