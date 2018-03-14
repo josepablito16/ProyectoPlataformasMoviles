@@ -205,7 +205,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(listener);
-        continueBtn.setEnabled(true);
+        //continueBtn.setEnabled(true);
     }
 
     @Override
