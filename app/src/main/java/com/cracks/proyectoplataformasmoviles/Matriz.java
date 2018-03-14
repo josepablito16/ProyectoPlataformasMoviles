@@ -2,7 +2,11 @@ package com.cracks.proyectoplataformasmoviles;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -27,6 +31,16 @@ public class Matriz extends AppCompatActivity {
         columnasNP.setMaxValue(3);
         columnasNP.setWrapSelectorWheel(true);
 
+        final Button generarBtn = findViewById(R.id.generar_btn);
+        final TextView codigoTV = findViewById(R.id.codigo_tv);
+
+        generarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codigoTV.setText(generateCode());
+            }
+        });
+
 
     }
 
@@ -46,8 +60,7 @@ public class Matriz extends AppCompatActivity {
                 codigoGen += alphanum.charAt(generator.nextInt(alphanum.length()));
             }
         }
-
-        System.out.println(codigoGen);
+        
 
         return codigoGen;
     }
