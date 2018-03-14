@@ -1,5 +1,6 @@
 package com.cracks.proyectoplataformasmoviles;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -65,7 +66,7 @@ public class Login extends AppCompatActivity {
             }
         };
 
-        //Inicia la implmementacion si el usuario desea hostear una sesion
+        //Inicia la implmementacion si el usuario desea hostear una sesion.
         CheckBox checkBox = findViewById(R.id.checkBox);
 
         Switch sw = findViewById(R.id.switch_login);
@@ -83,12 +84,11 @@ public class Login extends AppCompatActivity {
 
                 } else {
 
-                    //Si no esta activado
+                    //Si no esta activado -> Siguiente pantalla
                     layoutLogin.setVisibility(View.GONE);
                     layoutPrincipal.setVisibility(View.VISIBLE);
 
                 }
-
             }
         });
 
@@ -103,7 +103,7 @@ public class Login extends AppCompatActivity {
                     continueBtn.setText("Register");
                     loginTV.setText("Create Account");
 
-                    //PONER AQUI LA IMPLEMENTACIO NPARA REGISTRAR UN USUARIO
+                    //PONER AQUI LA IMPLEMENTACION PARA REGISTRAR UN USUARIO
 
                 } else {
 
@@ -111,10 +111,7 @@ public class Login extends AppCompatActivity {
                     loginTV.setText("Login");
 
                 }
-
             }
-
-
         });
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
@@ -134,22 +131,29 @@ public class Login extends AppCompatActivity {
         EditText usernameText = findViewById(R.id.username_text);
         EditText passwordText = findViewById(R.id.password_text);
 
-        String email = usernameText.getText().toString();
-        String contra = passwordText.getText().toString();
+        final String email = usernameText.getText().toString();
+        final String contra = passwordText.getText().toString();
 
         if (!email.isEmpty() && !contra.isEmpty())
         {
             mAuth.signInWithEmailAndPassword(email,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    //Si la informacion de la BD es correcta
                     if (task.isSuccessful())
                     {
                         Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
+
+                        //Se crea un nuevo intent y se inicia otra pantalla
+                        Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
+                        nuevoIntent.putExtra("usuario",email);
+                        startActivityForResult(nuevoIntent, 1);
+
                     }
                     else
                     {
                         Toast.makeText(getApplicationContext(),"INCORRECTO",Toast.LENGTH_LONG).show();
-
                     }
                 }
             });

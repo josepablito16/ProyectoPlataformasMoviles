@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class Configuracion extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
@@ -18,8 +21,12 @@ public class Configuracion extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
+
+        String correo = getIntent().getStringExtra("usuario");
+        String usuario = correo.substring(0,correo.indexOf("@"));
 
         NumberPicker np = (NumberPicker) findViewById(R.id.np);
 
@@ -29,6 +36,9 @@ public class Configuracion extends AppCompatActivity {
         np.setMinValue(minimo);
         np.setMaxValue(maximo);
         np.setWrapSelectorWheel(true);
+
+        TextView nombreUsuario = findViewById(R.id.usuarioTV);
+        nombreUsuario.setText("¡Bienvenido " + usuario + "!");
 
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
