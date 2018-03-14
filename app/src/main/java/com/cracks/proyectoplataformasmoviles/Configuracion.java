@@ -25,8 +25,7 @@ public class Configuracion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
 
-        String correo = getIntent().getStringExtra("usuario");
-        String usuario = correo.substring(0,correo.indexOf("@"));
+        String usuario = getIntent().getStringExtra("usuario");
 
         NumberPicker np = (NumberPicker) findViewById(R.id.np);
 

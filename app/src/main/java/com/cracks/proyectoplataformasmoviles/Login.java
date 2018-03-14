@@ -124,7 +124,7 @@ public class Login extends AppCompatActivity {
                     EditText usernameText = findViewById(R.id.username_text);
                     EditText passwordText = findViewById(R.id.password_text);
 
-                    final String email = usernameText.getText().toString();
+                    final String email = usernameText.getText().toString() + "@gmail.com";
                     final String contra = passwordText.getText().toString();
                     //no tiene usuario
                     if (!email.isEmpty() && !contra.isEmpty())
@@ -156,10 +156,10 @@ public class Login extends AppCompatActivity {
     {
 
         //Se declaran las variables que se van a usar en los metodos
-        EditText usernameText = findViewById(R.id.username_text);
+        final EditText usernameText = findViewById(R.id.username_text);
         EditText passwordText = findViewById(R.id.password_text);
 
-        final String email = usernameText.getText().toString();
+        final String email = usernameText.getText().toString() + "@gmail.com";
         final String contra = passwordText.getText().toString();
 
         if (!email.isEmpty() && !contra.isEmpty())
@@ -175,13 +175,16 @@ public class Login extends AppCompatActivity {
 
                         //Se crea un nuevo intent y se inicia otra pantalla
                         Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
-                        nuevoIntent.putExtra("usuario",email);
+                        nuevoIntent.putExtra("usuario",usernameText.getText().toString());
                         startActivityForResult(nuevoIntent, 1);
 
                     }
+
                     else
                     {
+
                         Toast.makeText(getApplicationContext(),"INCORRECTO",Toast.LENGTH_LONG).show();
+
                     }
                 }
             });
