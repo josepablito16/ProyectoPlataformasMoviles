@@ -24,43 +24,37 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener listener;
 
-     TextView loginTV = findViewById(R.id.login_id);
-     TextView usernameTV = findViewById(R.id.username_id);
-     TextView passwordTV = findViewById(R.id.password_id);
-     TextView welcomeTV = findViewById(R.id.welcome_tv);
-     TextView mensajeTV = findViewById(R.id.mensaje_tv);
-     TextView roomText = findViewById(R.id.room_text);
-
-     EditText usernameText = findViewById(R.id.username_text);
-     EditText passwordText = findViewById(R.id.password_text);
-
-     Button entrarBtn = findViewById(R.id.entrar_btn);
-     Button continueBtn = findViewById(R.id.continue_btn);//Ingresar sesion
-
-     ConstraintLayout layoutLogin = findViewById(R.id.loginLayout);
-     ConstraintLayout layoutPrincipal = findViewById(R.id.principalLayout);
-
-     CheckBox checkBox = findViewById(R.id.checkBox);
-
-
-
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mAuth=FirebaseAuth.getInstance();
 
+        //Variables / objetos que no se usan.
+        TextView usernameTV = findViewById(R.id.username_id);
+        TextView passwordTV = findViewById(R.id.password_id);
+        TextView welcomeTV = findViewById(R.id.welcome_tv);
+        TextView mensajeTV = findViewById(R.id.mensaje_tv);
+        TextView roomText = findViewById(R.id.room_text);
+        Button entrarBtn = findViewById(R.id.entrar_btn);
+
+        //Variables que se usan, por ello se declaran final.
+        final TextView loginTV = findViewById(R.id.login_id);
+        final Button continueBtn = findViewById(R.id.continue_btn);//Ingresar sesion
+        final ConstraintLayout layoutLogin = findViewById(R.id.loginLayout);
+        final ConstraintLayout layoutPrincipal = findViewById(R.id.principalLayout);
+
+        //Listener de la base de datos
         listener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 FirebaseUser user=mAuth.getCurrentUser();
+
                 if (user==null)
                 {// no esta logeado
                     Toast.makeText(getApplicationContext(),"NO LOGEADO",Toast.LENGTH_LONG).show();
-
 
                 }
                 else
@@ -68,15 +62,13 @@ public class Login extends AppCompatActivity {
                     //esta logeado :)
                     Toast.makeText(getApplicationContext(),"CORRECTO Y LOGEADO",Toast.LENGTH_LONG).show();
                 }
-
             }
         };
 
-
-
+        //Inicia la implmementacion si el usuario desea hostear una sesion
+        CheckBox checkBox = findViewById(R.id.checkBox);
 
         Switch sw = findViewById(R.id.switch_login);
-
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -85,12 +77,13 @@ public class Login extends AppCompatActivity {
 
                 if (isChecked) {
 
+                    //Si el boton de switch esta activado
                     layoutLogin.setVisibility(View.VISIBLE);
                     layoutPrincipal.setVisibility(View.GONE);
 
-
                 } else {
 
+                    //Si no esta activado
                     layoutLogin.setVisibility(View.GONE);
                     layoutPrincipal.setVisibility(View.VISIBLE);
 
@@ -99,14 +92,18 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        //Inicia la implementacion si el usuario quiere hacer una cuenta
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
                 if (isChecked) {
 
+                    //Si la casilla esta marcada
                     continueBtn.setText("Register");
                     loginTV.setText("Create Account");
+
+                    //PONER AQUI LA IMPLEMENTACIO NPARA REGISTRAR UN USUARIO
 
                 } else {
 
@@ -132,8 +129,13 @@ public class Login extends AppCompatActivity {
 
     private void ingresar()
     {
-        String email=usernameText.getText().toString();
-        String contra=passwordText.getText().toString();
+
+        //Se declaran las variables que se van a usar en los metodos
+        EditText usernameText = findViewById(R.id.username_text);
+        EditText passwordText = findViewById(R.id.password_text);
+
+        String email = usernameText.getText().toString();
+        String contra = passwordText.getText().toString();
 
         if (!email.isEmpty() && !contra.isEmpty())
         {
@@ -151,6 +153,9 @@ public class Login extends AppCompatActivity {
                     }
                 }
             });
+
+        } else {
+            Toast.makeText(getApplicationContext(),"Por favor llene todos los campos",Toast.LENGTH_LONG).show();
         }
 
     }
