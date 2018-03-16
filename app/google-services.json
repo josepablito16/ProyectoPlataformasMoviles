@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "535173320631-sofh5ucf1toqes5n4dupg9ttmgo7nvbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cracks.proyectoplataformasmoviles",
+            "certificate_hash": "38f153d9c4d48ba55d4e26e212f32aa51bb17a0e"
+          }
+        },
+        {
           "client_id": "535173320631-shrjac29ob2kiace9kcbbqdst123of29.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535173320631-shrjac29ob2kiace9kcbbqdst123of29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
