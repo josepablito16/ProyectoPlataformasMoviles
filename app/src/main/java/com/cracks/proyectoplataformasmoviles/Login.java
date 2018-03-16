@@ -1,15 +1,18 @@
 package com.cracks.proyectoplataformasmoviles;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,21 +27,20 @@ public class Login extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener listener;
+    View view;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        view = this.getCurrentFocus();
         mAuth=FirebaseAuth.getInstance();
-
         //Variables / objetos que no se usan.
         TextView usernameTV = findViewById(R.id.username_id);
         TextView passwordTV = findViewById(R.id.password_id);
         TextView welcomeTV = findViewById(R.id.welcome_tv);
         TextView mensajeTV = findViewById(R.id.mensaje_tv);
         TextView roomText = findViewById(R.id.room_text);
-        Button entrarBtn = findViewById(R.id.entrar_btn);
 
         //Variables que se usan, por ello se declaran final.
         final TextView loginTV = findViewById(R.id.login_id);
@@ -167,17 +169,16 @@ public class Login extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-
                     //Si la informacion de la BD es correcta
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
 
                         //Se crea un nuevo intent y se inicia otra pantalla
+
                         Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
                         nuevoIntent.putExtra("usuario",usernameText.getText().toString());
                         startActivityForResult(nuevoIntent, 1);
-
                     }
 
                     else
