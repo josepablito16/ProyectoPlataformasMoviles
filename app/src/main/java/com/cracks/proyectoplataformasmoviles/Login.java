@@ -165,99 +165,75 @@ public class Login extends AppCompatActivity {
 
         if (!email.isEmpty() && !contra.isEmpty())
         {
-            mAuth.signInWithEmailAndPassword(email,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            AsyncTask<String, String, String> cargaLogin = new AsyncTask<String, String, String>() {
+
+                String estado = "";
+
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    //Si la informacion de la BD es correcta
-                    if (task.isSuccessful())
-                    {
-//                        Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
+                protected void onPreExecute() {
 
-                        //Se crea un nuevo intent y se inicia otra pantalla
+                    carga.setVisibility(View.VISIBLE);
+                    continueBtn.setClickable(false);
+                    Toast.makeText(getApplicationContext(),"INICIANDO SESION...",Toast.LENGTH_LONG).show();
 
-                        Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
-                        nuevoIntent.putExtra("usuario",usernameText.getText().toString());
-                        startActivityForResult(nuevoIntent, 1);
-                    }
-
-                    else
-                    {
-
-                        Toast.makeText(getApplicationContext(),"INCORRECTO",Toast.LENGTH_LONG).show();
-
-                    }
                 }
-            });
+
+                @Override
+                protected String doInBackground(String... strings) {
+
+                    try {
+
+                        Thread.sleep(3000);
+
+                        mAuth.signInWithEmailAndPassword(email, contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                //Si la informacion de la BD es correcta
+                                if (task.isSuccessful()) {
+
+                                    estado = "listo";
+
+                                    Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
+
+                                    //Se crea un nuevo intent y se inicia otra pantalla
+
+                                    Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
+                                    nuevoIntent.putExtra("usuario",usernameText.getText().toString());
+                                    startActivityForResult(nuevoIntent, 1);
+
+
+                                } else {
+
+                                    Toast.makeText(getApplicationContext(), "INCORRECTO", Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    return estado;
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+
+                    carga.setVisibility(View.GONE);
+                    continueBtn.setClickable(true);
+
+                }
+
+            };
+
+            cargaLogin.execute();
 
         } else {
-            Toast.makeText(getApplicationContext(),"Por favor llene todos los campos",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Por favor llene todos los campos", Toast.LENGTH_LONG).show();
         }
-
-//            AsyncTask<String, String, String> cargaLogin = new AsyncTask<String, String, String>() {
-//
-//                String estado = "";
-//
-//                @Override
-//                protected void onPreExecute() {
-//
-//                    carga.setVisibility(View.VISIBLE);
-//                    continueBtn.setClickable(false);
-//                    Toast.makeText(getApplicationContext(),"INICIANDO SESION...",Toast.LENGTH_LONG).show();
-//
-//                }
-//
-//                @Override
-//                protected String doInBackground(String... strings) {
-//
-//                    try {
-//
-//                        Thread.sleep(3000);
-//
-//                        mAuth.signInWithEmailAndPassword(email, contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                                //Si la informacion de la BD es correcta
-//                                if (task.isSuccessful()) {
-//
-//                                    estado = "listo";
-//
-//                                    Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
-//
-//                                    //Se crea un nuevo intent y se inicia otra pantalla
-//
-//                                    Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
-//                                    nuevoIntent.putExtra("usuario",usernameText.getText().toString());
-//                                    startActivityForResult(nuevoIntent, 1);
-//
-//
-//                                } else {
-//
-//                                    Toast.makeText(getApplicationContext(), "INCORRECTO", Toast.LENGTH_LONG).show();
-//
-//                                }
-//                            }
-//                        });
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    return estado;
-//                }
-//
-//                @Override
-//                protected void onPostExecute(String s) {
-//
-//                    carga.setVisibility(View.GONE);
-//                    continueBtn.setClickable(true);
-//
-//                }
-//
-//            };
-//
-//            cargaLogin.execute();
 
     }
 
