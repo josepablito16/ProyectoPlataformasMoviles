@@ -206,6 +206,7 @@ public class Login extends AppCompatActivity {
 
                                 } else {
 
+                                    estado = "fallo";
                                     Toast.makeText(getApplicationContext(), "INCORRECTO", Toast.LENGTH_LONG).show();
 
                                 }
