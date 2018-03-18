@@ -1,13 +1,12 @@
 package com.cracks.proyectoplataformasmoviles;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -105,10 +104,6 @@ public class Login extends AppCompatActivity {
                     continueBtn.setText("Register");
                     loginTV.setText("Create Account");
 
-
-
-                    //PONER AQUI LA IMPLEMENTACION PARA REGISTRAR UN USUARIO
-
                 } else {
 
                     continueBtn.setText("Continue");
@@ -148,7 +143,6 @@ public class Login extends AppCompatActivity {
 
                 }
 
-
             }
         });
 
@@ -160,6 +154,11 @@ public class Login extends AppCompatActivity {
         //Se declaran las variables que se van a usar en los metodos
         final EditText usernameText = findViewById(R.id.username_text);
         EditText passwordText = findViewById(R.id.password_text);
+
+        //Boton de carga invisible hasta interaccion
+        final ProgressBar carga = findViewById(R.id.cargaInicio);
+
+        final Button continueBtn = findViewById(R.id.continue_btn);
 
         final String email = usernameText.getText().toString() + "@gmail.com";
         final String contra = passwordText.getText().toString();
@@ -193,6 +192,72 @@ public class Login extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(),"Por favor llene todos los campos",Toast.LENGTH_LONG).show();
         }
+
+//            AsyncTask<String, String, String> cargaLogin = new AsyncTask<String, String, String>() {
+//
+//                String estado = "";
+//
+//                @Override
+//                protected void onPreExecute() {
+//
+//                    carga.setVisibility(View.VISIBLE);
+//                    continueBtn.setClickable(false);
+//                    Toast.makeText(getApplicationContext(),"INICIANDO SESION...",Toast.LENGTH_LONG).show();
+//
+//                }
+//
+//                @Override
+//                protected String doInBackground(String... strings) {
+//
+//                    try {
+//
+//                        Thread.sleep(3000);
+//
+//                        mAuth.signInWithEmailAndPassword(email, contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                                //Si la informacion de la BD es correcta
+//                                if (task.isSuccessful()) {
+//
+//                                    estado = "listo";
+//
+//                                    Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
+//
+//                                    //Se crea un nuevo intent y se inicia otra pantalla
+//
+//                                    Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
+//                                    nuevoIntent.putExtra("usuario",usernameText.getText().toString());
+//                                    startActivityForResult(nuevoIntent, 1);
+//
+//
+//                                } else {
+//
+//                                    Toast.makeText(getApplicationContext(), "INCORRECTO", Toast.LENGTH_LONG).show();
+//
+//                                }
+//                            }
+//                        });
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    return estado;
+//                }
+//
+//                @Override
+//                protected void onPostExecute(String s) {
+//
+//                    carga.setVisibility(View.GONE);
+//                    continueBtn.setClickable(true);
+//
+//                }
+//
+//            };
+//
+//            cargaLogin.execute();
 
     }
 
