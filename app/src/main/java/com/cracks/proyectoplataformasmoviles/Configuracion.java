@@ -4,11 +4,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -127,18 +127,17 @@ public class Configuracion extends AppCompatActivity {
                                 String uploadId=mDatabaseRef.push().getKey();
                                 mDatabaseRef.child(uploadId).setValue(subirImagen);
 
-                                estado="listo";
+                                Intent intent = new Intent(Configuracion.this, Matriz.class);
+                                intent.putExtra("persona", number.getText());
+                                startActivityForResult(intent, 1);
 
                             }
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                        estado="fallo";
-                                    }
-                                });
+                        }) .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "COULDN'T UPLOAD IMAGE TO DB",Toast.LENGTH_LONG).show();
+                            }
+                        });
 
                         return estado;
                     }
@@ -154,19 +153,6 @@ public class Configuracion extends AppCompatActivity {
                         boton.setClickable(true);
                         boton1.setClickable(true);
                         barraDeProgreso.setVisibility(View.VISIBLE);
-
-                        if (estado.equals("listo")) {
-
-                            Intent intent = new Intent(Configuracion.this, Matriz.class);
-                            intent.putExtra("persona", number.getText());
-                            startActivityForResult(intent, 1);
-
-                        } else {
-
-                            Toast.makeText(getApplicationContext(), "COULDN'T UPLOAD IMAGE TO DB",Toast.LENGTH_LONG).show();
-
-                        }
-
                     }
 
                 };
