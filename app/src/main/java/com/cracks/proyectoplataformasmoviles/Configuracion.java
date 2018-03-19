@@ -75,104 +75,64 @@ public class Configuracion extends AppCompatActivity {
             }
         });
 
-
-
         boton1.setOnClickListener(new View.OnClickListener() {
+
+            ProgressBar progressBar = findViewById(R.id.barraProgreso);
+
+
             @Override
             public void onClick(View view) {
 
-                AsyncTask<String, Integer, String> cargarImagen = new AsyncTask<String, Integer, String>() {
+                progressBar.setVisibility(View.VISIBLE);
+                boton.setClickable(false);
+                boton1.setClickable(false);
 
-                    ProgressBar barraDeProgreso = findViewById(R.id.barraProgreso);
-                    int progreso;
+                //subir imagen a la base de datos
 
-                    String estado = "";
+                //obtiene la referencia del alamacenamiento
+                StorageReference ref=mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "."+getImageExt(imageUri));
 
+                // agregar archivo a referencia
+
+                ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    protected void onPreExecute() {
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        boton.setClickable(false);
-                        boton1.setClickable(false);
-                        barraDeProgreso.setVisibility(View.VISIBLE);
-                        progreso = 0;
-                        Toast.makeText(getApplicationContext(),"Cargando imagen...",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
+                        //guardar informacion de imagen en firebase
+
+                        SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
+                        String uploadId=mDatabaseRef.push().getKey();
+                        mDatabaseRef.child(uploadId).setValue(subirImagen);
+
+                        Intent intent = new Intent(Configuracion.this, Matriz.class);
+                        intent.putExtra("persona", number.getText());
+                        startActivityForResult(intent, 1);
 
                     }
-
-                    @Override
-                    protected String doInBackground(String... strings) {
-
-                        //subir imagen a la base de datos
-
-                        //obtiene la referencia del alamacenamiento
-                        StorageReference ref=mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "."+getImageExt(imageUri));
-
-                        // agregar archivo a referencia
-
-                        ref.putFile(imageUri)
-
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
-
-                                //guardar informacion de imagen en firebase
-
-                                SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
-                                String uploadId=mDatabaseRef.push().getKey();
-                                mDatabaseRef.child(uploadId).setValue(subirImagen);
-
-                                Intent intent = new Intent(Configuracion.this, Matriz.class);
-                                intent.putExtra("persona", number.getText());
-                                startActivityForResult(intent, 1);
-
-                            }
-
-                        }) .addOnFailureListener(new OnFailureListener() {
+                })
+                        .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+
+                                Toast.makeText(getApplicationContext(),"ERROR UPLOADING IMAGE",Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                                boton.setClickable(true);
+                                boton1.setClickable(true);
+
                             }
-
                         })
-                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                        while (progreso<100) {
-                                            progreso = (int)((100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount());
-                                            publishProgress(progreso);
-                                            SystemClock.sleep(20);
+                                double progress =(100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                                progressBar.setProgress((int) progress);
 
-                                        }
-
-                                    }
-
-                                });
-
-                        return estado;
-
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Integer... values) {
-                        barraDeProgreso.setProgress(values[0]);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-
-                        boton.setClickable(true);
-                        boton1.setClickable(true);
-                        barraDeProgreso.setVisibility(View.VISIBLE);
-                    }
-
-                };
-
-                cargarImagen.execute();
+                            }
+                        });
             }
+
         });
 
         boton.setOnClickListener(new View.OnClickListener() {
