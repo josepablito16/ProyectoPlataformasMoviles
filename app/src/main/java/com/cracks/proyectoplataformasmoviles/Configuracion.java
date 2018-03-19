@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -101,13 +102,6 @@ public class Configuracion extends AppCompatActivity {
                     @Override
                     protected String doInBackground(String... strings) {
 
-                        while (progreso<100) {
-                            progreso++;
-                            publishProgress(progreso);
-                            SystemClock.sleep(20);
-
-                        }
-
                         //subir imagen a la base de datos
 
                         //obtiene la referencia del alamacenamiento
@@ -115,12 +109,15 @@ public class Configuracion extends AppCompatActivity {
 
                         // agregar archivo a referencia
 
-                        ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        ref.putFile(imageUri)
+
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                 Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
+
                                 //guardar informacion de imagen en firebase
 
                                 SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
@@ -132,14 +129,31 @@ public class Configuracion extends AppCompatActivity {
                                 startActivityForResult(intent, 1);
 
                             }
+
                         }) .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "COULDN'T UPLOAD IMAGE TO DB",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
                             }
-                        });
+
+                        })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                        while (progreso<100) {
+                                            progreso = (int)((100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount());
+                                            publishProgress(progreso);
+                                            SystemClock.sleep(20);
+
+                                        }
+
+                                    }
+
+                                });
 
                         return estado;
+
                     }
 
                     @Override
