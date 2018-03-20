@@ -107,6 +107,7 @@ public class Configuracion extends AppCompatActivity {
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);
                         intent.putExtra("persona", number.getText());
+                        intent.putExtra("url",taskSnapshot.getDownloadUrl());
                         startActivityForResult(intent, 1);
 
                     }
