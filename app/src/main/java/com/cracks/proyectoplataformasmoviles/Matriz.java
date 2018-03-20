@@ -61,6 +61,9 @@ private String img;
         generarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                generarBtn.setClickable(false);
+
                 String genCode = generateCode();
 
                 writeNewCuarto(genCode, filasT, columnasT, filasT, columnasT, img);

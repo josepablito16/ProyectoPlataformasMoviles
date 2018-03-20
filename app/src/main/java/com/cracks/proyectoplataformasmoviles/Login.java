@@ -173,8 +173,8 @@ public class Login extends AppCompatActivity {
                 @Override
                 protected void onPreExecute() {
 
-                    carga.setVisibility(View.VISIBLE);
                     continueBtn.setClickable(false);
+                    carga.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(),"INICIANDO SESION...",Toast.LENGTH_LONG).show();
 
                 }
@@ -224,6 +224,11 @@ public class Login extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(String s) {
 
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     carga.setVisibility(View.GONE);
                     continueBtn.setClickable(true);
 
