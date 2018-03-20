@@ -28,11 +28,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".SalaEspera" />
-        <activity
-            android:name=".Display"
+
+        <activity android:name=".Display"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_display"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:label="@string/title_activity_display">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
