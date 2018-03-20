@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,17 +20,19 @@ private DatabaseReference mDatabase;
 private int columnasT, filasT;
 private String img;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        img = getIntent().getStringExtra("url");
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matriz);
 
-        NumberPicker filasNP = (NumberPicker) findViewById(R.id.filasNP);
-        NumberPicker columnasNP = (NumberPicker) findViewById(R.id.columnasNP);
-
+        final NumberPicker filasNP = (NumberPicker) findViewById(R.id.filasNP);
+        final NumberPicker columnasNP = (NumberPicker) findViewById(R.id.columnasNP);
+        img=getIntent().getStringExtra("url");
         filasNP.setMinValue(2);
         filasNP.setMaxValue(6);
         filasNP.setWrapSelectorWheel(true);
@@ -47,14 +50,16 @@ private String img;
         columnasNP.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                columnasT = newVal;
+                columnasT = columnasNP.getValue();
+
             }
         });
 
         filasNP.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                filasT = newVal;
+                filasT = filasNP.getValue();
+
             }
         });
 
@@ -75,7 +80,8 @@ private String img;
     }
 
     private void writeNewCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
-        Cuarto cuarto = new Cuarto(roomName, filasT, columnasT, posicionX, posicionY, img);
+        Cuarto cuarto = new Cuarto(filasT, columnasT, posicionX, posicionY, img);
+        Toast.makeText(getApplicationContext(), img+"",Toast.LENGTH_LONG).show();
 
         mDatabase.child(roomName).setValue(cuarto);
     }

@@ -102,12 +102,13 @@ public class Configuracion extends AppCompatActivity {
                         //guardar informacion de imagen en firebase
 
                         SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
-                        String uploadId=mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(uploadId).setValue(subirImagen);
+                        //String uploadId=mDatabaseRef.push().getKey();
+                        //mDatabaseRef.child(uploadId).setValue(subirImagen);
+                        Toast.makeText(getApplicationContext(), taskSnapshot.getDownloadUrl()+"",Toast.LENGTH_LONG).show();
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);
                         intent.putExtra("persona", number.getText());
-                        intent.putExtra("url",taskSnapshot.getDownloadUrl());
+                        intent.putExtra("url",taskSnapshot.getDownloadUrl().toString());
                         startActivityForResult(intent, 1);
 
                     }

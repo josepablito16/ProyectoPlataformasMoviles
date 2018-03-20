@@ -14,8 +14,8 @@ public class Cuarto {
     private int filasT, columnasT, posicionX, posicionY;
     private String imagen;
 
-    public Cuarto(String rCode, int filas, int columnas, int posX, int posY,  String img){
-        randomCode = rCode;
+    public Cuarto(int filas, int columnas, int posX, int posY,  String img)
+    {
         filasT = filas;
         columnasT = columnas;
         posicionX = posX;
