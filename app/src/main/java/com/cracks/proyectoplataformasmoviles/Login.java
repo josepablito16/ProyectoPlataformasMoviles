@@ -21,17 +21,30 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener listener;
     View view;
+    private DatabaseReference mDatabase;
+    String room;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+
         view = this.getCurrentFocus();
         mAuth=FirebaseAuth.getInstance();
         //Variables / objetos que no se usan.
@@ -39,13 +52,40 @@ public class Login extends AppCompatActivity {
         TextView passwordTV = findViewById(R.id.password_id);
         TextView welcomeTV = findViewById(R.id.welcome_tv);
         TextView mensajeTV = findViewById(R.id.mensaje_tv);
-        TextView roomText = findViewById(R.id.room_text);
+        final EditText roomText = findViewById(R.id.room_text);
 
         //Variables que se usan, por ello se declaran final.
         final TextView loginTV = findViewById(R.id.login_id);
         final Button continueBtn = findViewById(R.id.continue_btn);//Ingresar sesion
         final ConstraintLayout layoutLogin = findViewById(R.id.loginLayout);
         final ConstraintLayout layoutPrincipal = findViewById(R.id.principalLayout);
+        final Button nextBtn = findViewById(R.id.entrar_btn);
+        final Switch sw = findViewById(R.id.switch_login);
+
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!sw.isChecked() && (roomText.getText().toString() != "")){
+                    Toast.makeText(getApplicationContext(), roomText.getText().toString(), Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        });
+
+//        mDatabase.child("Cuartos").orderByKey().equalTo("EOD630").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         //Listener de la base de datos
         listener=new FirebaseAuth.AuthStateListener() {
@@ -70,7 +110,7 @@ public class Login extends AppCompatActivity {
         //Inicia la implmementacion si el usuario desea hostear una sesion.
         final CheckBox checkBox = findViewById(R.id.checkBox);
 
-        Switch sw = findViewById(R.id.switch_login);
+
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
