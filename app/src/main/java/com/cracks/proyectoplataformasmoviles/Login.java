@@ -35,19 +35,17 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener listener;
     View view;
-    private DatabaseReference mDatabase;
-    String room;
-    String info;
-    ArrayList<Cuarto> cuartos = new ArrayList<>();
+
+    int columna;
+    int fila;
+    String img;
+    int posX;
+    int posY;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Cuartos");
-
 
         //hola
         view = this.getCurrentFocus();
@@ -72,32 +70,36 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
-                startActivityForResult(nuevoIntent, 0);
+                DatabaseReference mDatabase;
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                mDatabase = database.getReference("Cuartos");
 
-//                ValueEventListener valueEventListener = new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                            Cuarto c = snapshot.getValue(Cuarto.class);
-//                            cuartos.add(c);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                };
-//
-//                if(!sw.isChecked() && (roomText.getText().toString() != "")){
-//                    for(Cuarto c: cuartos){
-//                        if(roomText.getText().toString() == c.getRandomCode()){
-//                            Toast.makeText(getApplicationContext(),c.getColumnasT(),Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                }
+                mDatabase.child(roomText.getText().toString()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
 
+                        columna = cuarto.getColumnasT();
+                        fila = cuarto.getFilasT();
+                        img = cuarto.getImagen();
+                        posX = cuarto.getPosicionX();
+                        posY = cuarto.getPosicionY();
+
+                        Intent intent = new Intent(Login.this, Display.class);
+                        intent.putExtra("columna", columna);
+                        intent.putExtra("fila", fila);
+                        intent.putExtra("img", img);
+                        intent.putExtra("posX", posX);
+                        intent.putExtra("posY", posY);
+
+                        startActivityForResult(intent, 1);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
