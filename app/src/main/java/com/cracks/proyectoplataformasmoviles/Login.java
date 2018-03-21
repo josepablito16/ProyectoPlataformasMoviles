@@ -74,32 +74,41 @@ public class Login extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 mDatabase = database.getReference("Cuartos");
 
-                mDatabase.child(roomText.getText().toString()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
+                try{
+                    mDatabase.child(roomText.getText().toString()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        columna = cuarto.getColumnasT();
-                        fila = cuarto.getFilasT();
-                        img = cuarto.getImagen();
-                        posX = cuarto.getPosicionX();
-                        posY = cuarto.getPosicionY();
+                            try{
+                                Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
 
-                        Intent intent = new Intent(Login.this, Display.class);
-                        intent.putExtra("columna", columna);
-                        intent.putExtra("fila", fila);
-                        intent.putExtra("img", img);
-                        intent.putExtra("posX", posX);
-                        intent.putExtra("posY", posY);
+                                columna = cuarto.getColumnasT();
+                                fila = cuarto.getFilasT();
+                                img = cuarto.getImagen();
+                                posX = cuarto.getPosicionX();
+                                posY = cuarto.getPosicionY();
 
-                        startActivityForResult(intent, 1);
-                    }
+                                Intent intent = new Intent(Login.this, Display.class);
+                                intent.putExtra("columna", columna);
+                                intent.putExtra("fila", fila);
+                                intent.putExtra("img", img);
+                                intent.putExtra("posX", posX);
+                                intent.putExtra("posY", posY);
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                                startActivityForResult(intent, 1);
+                            }catch(Exception e){
+                                Toast.makeText(getApplicationContext(),"There's no room: " + roomText.getText().toString(),Toast.LENGTH_LONG).show();
+                            }
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }catch(Exception e){
+                    Toast.makeText(getApplicationContext(),"There's no room: " + roomText.getText().toString(),Toast.LENGTH_LONG).show();
+                }
             }
         });
 
