@@ -14,6 +14,11 @@ public class Cuarto {
     private int filasT, columnasT, posicionX, posicionY;
     private String imagen;
 
+
+    public Cuarto(){
+
+    }
+
     public Cuarto(int filas, int columnas, int posX, int posY,  String img)
     {
         filasT = filas;
