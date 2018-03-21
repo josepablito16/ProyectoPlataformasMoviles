@@ -94,10 +94,10 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
-        final ImageView imagen =  findViewById(R.id.display_IV);
-
-        int filas = 1;
-        int columnas = 2;
+//        final ImageView imagen =  findViewById(R.id.display_IV);
+//
+//        int filas = 1;
+//        int columnas = 2;
 //        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
 //        int height = i.getHeight()/filas;
 //        int width = i.getWidth()/columnas;
@@ -106,16 +106,6 @@ public class Display extends AppCompatActivity {
 //        i = Bitmap.createBitmap(i,posx*width,posy*height,width,height);
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100);
     }
 
     private void toggle() {
