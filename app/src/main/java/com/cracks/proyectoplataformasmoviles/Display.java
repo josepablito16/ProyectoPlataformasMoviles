@@ -94,10 +94,11 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
+        int filas = getIntent().getIntExtra("filas",1);
+        int columnas = getIntent().getIntExtra("columnas",1);
+
 //        final ImageView imagen =  findViewById(R.id.display_IV);
 //
-//        int filas = 1;
-//        int columnas = 2;
 //        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
 //        int height = i.getHeight()/filas;
 //        int width = i.getWidth()/columnas;
