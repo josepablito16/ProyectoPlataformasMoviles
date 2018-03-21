@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
+                Intent nuevoIntent = new Intent(Login.this, Display.class);
                 startActivityForResult(nuevoIntent, 0);
 
 //                ValueEventListener valueEventListener = new ValueEventListener() {
