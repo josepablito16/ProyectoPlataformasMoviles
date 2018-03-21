@@ -1,6 +1,7 @@
 package com.cracks.proyectoplataformasmoviles;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBar;
@@ -9,13 +10,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class Display extends AppCompatActivity {
+    URL imageUrl = null;
+    HttpURLConnection conn = null;
+
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -94,10 +106,19 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
+
+
         int filas = getIntent().getIntExtra("filas",1);
         int columnas = getIntent().getIntExtra("columnas",1);
 
-//        final ImageView imagen =  findViewById(R.id.display_IV);
+
+
+
+
+
+
+
+        final ImageView imagen =  findViewById(R.id.display_IV);
 //
 //        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
 //        int height = i.getHeight()/filas;
@@ -107,6 +128,25 @@ public class Display extends AppCompatActivity {
 //        i = Bitmap.createBitmap(i,posx*width,posy*height,width,height);
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
+
+
+        try {
+
+            imageUrl = new URL("https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521643842348.jpg?alt=media&token=fe6f365c-ae78-473d-ba05-58be0e1f53e3");
+            conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.connect();
+            Bitmap imagen2 = BitmapFactory.decodeStream(conn.getInputStream());
+            imagen.setImageBitmap(imagen2);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+
+
+
     }
 
     private void toggle() {
