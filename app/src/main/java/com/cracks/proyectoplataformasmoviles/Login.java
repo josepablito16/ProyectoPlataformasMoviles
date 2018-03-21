@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Login extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -34,6 +37,8 @@ public class Login extends AppCompatActivity {
     View view;
     private DatabaseReference mDatabase;
     String room;
+    String info;
+    ArrayList<Cuarto> cuartos = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,7 +46,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Cuartos");
 
 
 
@@ -67,25 +72,36 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(!sw.isChecked() && (roomText.getText().toString() != "")){
-                    Toast.makeText(getApplicationContext(), roomText.getText().toString(), Toast.LENGTH_LONG).show();
-                }
+                Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
+                startActivityForResult(nuevoIntent, 0);
 
+//                ValueEventListener valueEventListener = new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            Cuarto c = snapshot.getValue(Cuarto.class);
+//                            cuartos.add(c);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                };
+//
+//                if(!sw.isChecked() && (roomText.getText().toString() != "")){
+//                    for(Cuarto c: cuartos){
+//                        if(roomText.getText().toString() == c.getRandomCode()){
+//                            Toast.makeText(getApplicationContext(),c.getColumnasT(),Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                }
 
             }
         });
 
-//        mDatabase.child("Cuartos").orderByKey().equalTo("EOD630").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+
 
         //Listener de la base de datos
         listener=new FirebaseAuth.AuthStateListener() {
