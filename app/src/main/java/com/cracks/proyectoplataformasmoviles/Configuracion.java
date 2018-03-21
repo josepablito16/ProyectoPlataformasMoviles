@@ -103,11 +103,11 @@ public class Configuracion extends AppCompatActivity {
                         //salu2
                         SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
                         String uploadId=mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(uploadId).setValue(subirImagen);
+                        //mDatabaseRef.child(uploadId).setValue(subirImagen);
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);
                         intent.putExtra("persona", number.getText());
-                        intent.putExtra("url",taskSnapshot.getDownloadUrl());
+                        intent.putExtra("url",taskSnapshot.getDownloadUrl().toString());
                         startActivityForResult(intent, 1);
 
                     }
