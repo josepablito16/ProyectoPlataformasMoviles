@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Cuartos");
 
 
-
+        //hola
         view = this.getCurrentFocus();
         mAuth=FirebaseAuth.getInstance();
         //Variables / objetos que no se usan.
