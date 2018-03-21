@@ -98,14 +98,14 @@ public class Display extends AppCompatActivity {
 
         int filas = 1;
         int columnas = 2;
-        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
-        int height = i.getHeight()/filas;
-        int width = i.getWidth()/columnas;
-        int posx = 0;
-        int posy = 0;
-        i = Bitmap.createBitmap(i,posx*width,posy*height,width,height);
-        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
-        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
+//        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
+//        int height = i.getHeight()/filas;
+//        int width = i.getWidth()/columnas;
+//        int posx = 0;
+//        int posy = 0;
+//        i = Bitmap.createBitmap(i,posx*width,posy*height,width,height);
+//        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
+//        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
     }
 
     @Override

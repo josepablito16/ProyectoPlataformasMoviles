@@ -2,6 +2,7 @@ package com.cracks.proyectoplataformasmoviles;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class Configuracion extends AppCompatActivity {
     Button boton;
     Button boton1;
     TextView number;
+    Drawable nuevo = null;
 
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -65,11 +67,14 @@ public class Configuracion extends AppCompatActivity {
         boton = (Button)findViewById(R.id.btnImage);
         boton1 = (Button)findViewById(R.id.btnNext);
         number = (TextView)findViewById(R.id.txtNumber);
+        number.setText("");
+
+        final Drawable inicio = foto_gallery.getDrawable();
 
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                Toast.makeText(getApplicationContext(), "" + newVal,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "" + newVal,Toast.LENGTH_LONG).show();
                 number.setText("");
                 number.setText("" + newVal);
             }
@@ -82,56 +87,62 @@ public class Configuracion extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                if (nuevo != null) {
 
-                progressBar.setVisibility(View.VISIBLE);
-                boton.setClickable(false);
-                boton1.setClickable(false);
 
-                //subir imagen a la base de datos
+                    progressBar.setVisibility(View.VISIBLE);
+                    boton.setClickable(false);
+                    boton1.setClickable(false);
 
-                //obtiene la referencia del alamacenamiento
-                StorageReference ref=mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "."+getImageExt(imageUri));
+                    //subir imagen a la base de datos
 
-                // agregar archivo a referencia
+                    //obtiene la referencia del alamacenamiento
+                    StorageReference ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imageUri));
 
-                ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // agregar archivo a referencia
 
-                        Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
-                        //guardar informacion de imagen en firebase
+                    ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
-                        String uploadId=mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(uploadId).setValue(subirImagen);
+                            Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA", Toast.LENGTH_LONG).show();
+                            //guardar informacion de imagen en firebase
 
-                        Intent intent = new Intent(Configuracion.this, Matriz.class);
-                        intent.putExtra("persona", number.getText());
-                        intent.putExtra("url",taskSnapshot.getDownloadUrl());
-                        startActivityForResult(intent, 1);
+                            SubirImagen subirImagen = new SubirImagen("Nombre de la imagen", taskSnapshot.getDownloadUrl().toString());
+                            String uploadId = mDatabaseRef.push().getKey();
+                            mDatabaseRef.child(uploadId).setValue(subirImagen);
 
-                    }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                            Intent intent = new Intent(Configuracion.this, Matriz.class);
+                            intent.putExtra("persona", number.getText());
+                            intent.putExtra("url", taskSnapshot.getDownloadUrl());
+                            startActivityForResult(intent, 1);
 
-                                Toast.makeText(getApplicationContext(),"ERROR UPLOADING IMAGE",Toast.LENGTH_LONG).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                                boton.setClickable(true);
-                                boton1.setClickable(true);
+                        }
+                    })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Toast.makeText(getApplicationContext(), "ERROR UPLOADING IMAGE", Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    boton.setClickable(true);
+                                    boton1.setClickable(true);
 
-                                double progress =(100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-                                progressBar.setProgress((int) progress);
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            }
-                        });
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                    progressBar.setProgress((int) progress);
+
+                                }
+                            });
+                }else{
+                    //No hara nada si no hay imagen
+                    Toast.makeText(getApplicationContext(), "You haven't selected any item!", Toast.LENGTH_LONG).show();
+                }
             }
 
         });
@@ -161,6 +172,8 @@ public class Configuracion extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
             foto_gallery.setImageURI(imageUri);
+            nuevo = foto_gallery.getDrawable();
+            Toast.makeText(getApplicationContext(), nuevo.toString(),Toast.LENGTH_LONG).show();
         }
     }
 
