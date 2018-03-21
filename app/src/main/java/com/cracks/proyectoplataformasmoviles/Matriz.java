@@ -83,7 +83,7 @@ private String img;
         Cuarto cuarto = new Cuarto(filasT, columnasT, posicionX, posicionY, img);
         Toast.makeText(getApplicationContext(), img+"",Toast.LENGTH_LONG).show();
 
-        mDatabase.child(roomName).setValue(cuarto);
+        mDatabase.child("Cuartos").child(roomName).setValue(cuarto);
     }
 
 
