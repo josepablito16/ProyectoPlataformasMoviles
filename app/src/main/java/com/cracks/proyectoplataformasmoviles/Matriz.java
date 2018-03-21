@@ -1,5 +1,6 @@
 package com.cracks.proyectoplataformasmoviles;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +45,7 @@ private String img;
         columnasNP.setWrapSelectorWheel(true);
 
         final Button generarBtn = findViewById(R.id.generar_btn);
+        final Button empezarBtn = findViewById(R.id.empezar_btn);
         final TextView codigoTV = findViewById(R.id.codigo_tv);
 
 
@@ -74,6 +76,17 @@ private String img;
                 writeNewCuarto(genCode, filasT, columnasT, filasT, columnasT, img);
                 codigoTV.setText(genCode);
 
+            }
+        });
+
+        empezarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent nuevoIntent = new Intent(Matriz.this, Display.class);
+                nuevoIntent.putExtra("filas", filasT);
+                nuevoIntent.putExtra("columnas",columnasT);
+                startActivityForResult(nuevoIntent, 1);
             }
         });
 
