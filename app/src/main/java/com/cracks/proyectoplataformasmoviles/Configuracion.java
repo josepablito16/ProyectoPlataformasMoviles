@@ -100,7 +100,7 @@ public class Configuracion extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
                         //guardar informacion de imagen en firebase
-
+                        //salu2
                         SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
                         String uploadId=mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(subirImagen);
