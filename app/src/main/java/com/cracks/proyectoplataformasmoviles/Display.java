@@ -1,25 +1,24 @@
 package com.cracks.proyectoplataformasmoviles;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+//import com.bumptech.glide.Glide;
+//import com.squareup.picasso.Picasso;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -101,44 +100,103 @@ public class Display extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_display);
 
         mVisible = true;
 
+        getBitmapFromURL();
 
-
-        int filas = getIntent().getIntExtra("filas",1);
-        int columnas = getIntent().getIntExtra("columnas",1);
-
-
-
-
-
-
-
-
-        final ImageView imagen =  findViewById(R.id.display_IV);
+//        int filas = getIntent().getIntExtra("filas",1);
+//        int columnas = getIntent().getIntExtra("columnas",1);
+//        int posX = getIntent().getIntExtra("posX",0);
+//        int posY = getIntent().getIntExtra("posY",0);
+//        String img = getIntent().getStringExtra("img");
 //
-//        Bitmap i = BitmapFactory.decodeResource(getResources(), R.drawable.fondo2);
+//        final ImageView imagen =  findViewById(R.id.display_IV);
+//
+//        Toast.makeText(this, img, Toast.LENGTH_SHORT).show();
+//
+//        String url;
+//        url="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521555857943.jpg?alt=media&token=385fe6c5-d473-4352-ba7b-eaa6f43dcd35";
+//
+//        Bitmap i = getBitmapFromURL(url);
+//
 //        int height = i.getHeight()/filas;
 //        int width = i.getWidth()/columnas;
-//        int posx = 0;
-//        int posy = 0;
-//        i = Bitmap.createBitmap(i,posx*width,posy*height,width,height);
+//        i = Bitmap.createBitmap(i,posX*width,posY*height,width,height);
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
-
-        String url;
-        url="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521643635282.jpg?alt=media&token=03416b7c-cede-45d1-bddb-d385f433651c";
-
-        Picasso.with(Display.this).load(url).into(imagen);
-
-
-
+//
+//        Picasso.with(Display.this).load(url).into(imagen);
 
     }
+
+    /**
+     * Thread que accede a obtener la imagen y desplegarla en la pantalla.
+     */
+    public void getBitmapFromURL() {
+
+        AsyncTask<String, Void, Bitmap> conseguirImg = new AsyncTask<String, Void, Bitmap>() {
+
+            @Override
+            protected void onPreExecute() {
+
+            }
+
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+
+                String url1="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521555857943.jpg?alt=media&token=385fe6c5-d473-4352-ba7b-eaa6f43dcd35";
+                Bitmap myBitmap = null;
+
+                try {
+                    
+                    URL url = new URL(url1);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    myBitmap = BitmapFactory.decodeStream(input);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+
+                return myBitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+
+                int filas = getIntent().getIntExtra("filas",1);
+                int columnas = getIntent().getIntExtra("columnas",1);
+                int posX = getIntent().getIntExtra("posX",0);
+                int posY = getIntent().getIntExtra("posY",0);
+
+                String img = getIntent().getStringExtra("img");
+                final ImageView imagen =  findViewById(R.id.display_IV);
+
+                int height = bitmap.getHeight()/filas;
+                int width = bitmap.getWidth()/columnas;
+//                int height = bitmap.getHeight()/1;
+//                int width = bitmap.getWidth()/2;
+
+                bitmap = Bitmap.createBitmap(bitmap,posX*width,posY*height,width,height);
+                imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,bitmap.getWidth()*2,bitmap.getHeight(),true));
+                imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,imagen.getWidth(),imagen.getHeight(),true));
+//                bitmap = Bitmap.createBitmap(bitmap,1*width,0*height,width,height);
+
+            }
+
+        };
+
+        conseguirImg.execute();
+    }
+
 
     private void toggle() {
         if (mVisible) {
