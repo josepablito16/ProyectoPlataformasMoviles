@@ -12,8 +12,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -24,8 +26,7 @@ import java.net.URL;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Display extends AppCompatActivity {
-    URL imageUrl = null;
-    HttpURLConnection conn = null;
+
 
 
     /**
@@ -129,20 +130,10 @@ public class Display extends AppCompatActivity {
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
 //        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
 
+        String url;
+        url="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521643635282.jpg?alt=media&token=03416b7c-cede-45d1-bddb-d385f433651c";
 
-        try {
-
-            imageUrl = new URL("https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521643842348.jpg?alt=media&token=fe6f365c-ae78-473d-ba05-58be0e1f53e3");
-            conn = (HttpURLConnection) imageUrl.openConnection();
-            conn.connect();
-            Bitmap imagen2 = BitmapFactory.decodeStream(conn.getInputStream());
-            imagen.setImageBitmap(imagen2);
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
+        Picasso.with(Display.this).load(url).into(imagen);
 
 
 

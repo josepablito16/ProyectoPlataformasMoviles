@@ -35,20 +35,20 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener listener;
     View view;
+    private DatabaseReference mDatabase;
     String room;
     String info;
     ArrayList<Cuarto> cuartos = new ArrayList<>();
-    int columna;
-    int fila;
-    String img;
-    int posX;
-    int posY;
-
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Cuartos");
+
+
 
         view = this.getCurrentFocus();
         mAuth=FirebaseAuth.getInstance();
@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity {
         TextView usernameTV = findViewById(R.id.username_id);
         TextView passwordTV = findViewById(R.id.password_id);
         TextView welcomeTV = findViewById(R.id.welcome_tv);
-        final TextView mensajeTV = findViewById(R.id.mensaje_tv);
+        TextView mensajeTV = findViewById(R.id.mensaje_tv);
         final EditText roomText = findViewById(R.id.room_text);
 
         //Variables que se usan, por ello se declaran final.
@@ -72,42 +72,36 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference mDatabase = database.getReference("Cuartos");
+                Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
+                startActivityForResult(nuevoIntent, 0);
 
+//                ValueEventListener valueEventListener = new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            Cuarto c = snapshot.getValue(Cuarto.class);
+//                            cuartos.add(c);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                };
+//
+//                if(!sw.isChecked() && (roomText.getText().toString() != "")){
+//                    for(Cuarto c: cuartos){
+//                        if(roomText.getText().toString() == c.getRandomCode()){
+//                            Toast.makeText(getApplicationContext(),c.getColumnasT(),Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                }
 
-
-                try {
-                    mDatabase.child(roomText.getText().toString()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                            Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
-
-                            try{
-                                Intent intent = new Intent(Login.this, Display.class);
-
-                                intent.putExtra("columna", columna);
-                                intent.putExtra("fila", fila);
-                                intent.putExtra("imagen", img);
-                                intent.putExtra("posX", posX);
-                                intent.putExtra("posY", posY);
-                                startActivityForResult(intent, 1);
-
-                            }catch(Exception e){
-                                Toast.makeText(getApplicationContext(), "There's no room: " + roomText.getText().toString(), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-                }catch(Exception e){
-                    Toast.makeText(getApplicationContext(), "There's no room: " + roomText.getText().toString(), Toast.LENGTH_LONG).show();
-                }
             }
         });
+
+
 
         //Listener de la base de datos
         listener=new FirebaseAuth.AuthStateListener() {
