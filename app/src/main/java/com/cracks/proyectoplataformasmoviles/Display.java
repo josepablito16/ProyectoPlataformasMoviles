@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,7 @@ import java.net.URL;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Display extends AppCompatActivity {
+
 
 
 
@@ -107,15 +110,19 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
-        getBitmapFromURL();
 
-//        int filas = getIntent().getIntExtra("filas",1);
-//        int columnas = getIntent().getIntExtra("columnas",1);
-//        int posX = getIntent().getIntExtra("posX",0);
-//        int posY = getIntent().getIntExtra("posY",0);
-//        String img = getIntent().getStringExtra("img");
-//
-//        final ImageView imagen =  findViewById(R.id.display_IV);
+
+        int filas = getIntent().getIntExtra("fila",1);
+        int columnas = getIntent().getIntExtra("columna",1);
+        int posX = getIntent().getIntExtra("posX",1);
+        int posY = getIntent().getIntExtra("posY",1);
+        String img = getIntent().getStringExtra("img");
+
+
+
+        getBitmapFromURL(filas,columnas,posX,posY,img);
+
+        final ImageView imagen =  findViewById(R.id.display_IV);
 //
 //        Toast.makeText(this, img, Toast.LENGTH_SHORT).show();
 //
@@ -137,24 +144,26 @@ public class Display extends AppCompatActivity {
     /**
      * Thread que accede a obtener la imagen y desplegarla en la pantalla.
      */
-    public void getBitmapFromURL() {
+    public void getBitmapFromURL(final int filas, final int columnas,final int posX,final int posY,final String img) {
+
 
         AsyncTask<String, Void, Bitmap> conseguirImg = new AsyncTask<String, Void, Bitmap>() {
 
             @Override
             protected void onPreExecute() {
+                Toast.makeText(getApplicationContext(),"Filas :"+filas+" columnas "+columnas+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
 
             }
 
             @Override
             protected Bitmap doInBackground(String... strings) {
 
-                String url1="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521555857943.jpg?alt=media&token=385fe6c5-d473-4352-ba7b-eaa6f43dcd35";
+
                 Bitmap myBitmap = null;
 
                 try {
                     
-                    URL url = new URL(url1);
+                    URL url = new URL(img);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
                     connection.connect();
@@ -172,12 +181,7 @@ public class Display extends AppCompatActivity {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
 
-                int filas = getIntent().getIntExtra("filas",1);
-                int columnas = getIntent().getIntExtra("columnas",1);
-                int posX = getIntent().getIntExtra("posX",0);
-                int posY = getIntent().getIntExtra("posY",0);
 
-                String img = getIntent().getStringExtra("img");
                 final ImageView imagen =  findViewById(R.id.display_IV);
 
                 int height = bitmap.getHeight()/filas;

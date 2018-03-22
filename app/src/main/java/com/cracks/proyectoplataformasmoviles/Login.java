@@ -84,13 +84,13 @@ public class Login extends AppCompatActivity {
                                 img = cuarto.getImagen();
                                 posX = cuarto.getPosicionX();
                                 posY = cuarto.getPosicionY();
-
+                                Toast.makeText(getApplicationContext(),"Filas :"+fila+" columnas "+columna+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(Login.this, Display.class);
-                                intent.putExtra("columna", columna);
-                                intent.putExtra("fila", fila);
+                                intent.putExtra("columna",(int)columna);
+                                intent.putExtra("fila",(int) fila);
                                 intent.putExtra("img", img.toString());
-                                intent.putExtra("posX", posX);
-                                intent.putExtra("posY", posY);
+                                intent.putExtra("posX",(int) posX);
+                                intent.putExtra("posY",(int) posY);
 
                                 startActivityForResult(intent, 1);
                             }catch(Exception e){
