@@ -89,8 +89,8 @@ public class Login extends AppCompatActivity {
                                 intent.putExtra("columna",(int)columna);
                                 intent.putExtra("fila",(int) fila);
                                 intent.putExtra("img", img.toString());
-                                intent.putExtra("posX",(int) posX);
-                                intent.putExtra("posY",(int) posY);
+                                intent.putExtra("posX",(int) posX - 1);
+                                intent.putExtra("posY",(int) posY - 1);
 
                                 startActivityForResult(intent, 1);
                             }catch(Exception e){
