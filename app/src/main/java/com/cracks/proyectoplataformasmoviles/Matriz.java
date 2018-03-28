@@ -93,7 +93,7 @@ private String img;
     }
 
     private void writeNewCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
-        Cuarto cuarto = new Cuarto(filasT, columnasT, posicionX, posicionY, img);
+        Cuarto cuarto = new Cuarto(filasT, columnasT,posicionY- 1 ,posicionX - 1 , img);
         Toast.makeText(getApplicationContext(), img+"",Toast.LENGTH_LONG).show();
 
         mDatabase.child("Cuartos").child(roomName).setValue(cuarto);

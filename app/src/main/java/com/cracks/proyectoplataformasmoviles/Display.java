@@ -14,10 +14,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.bumptech.glide.Glide;
 //import com.squareup.picasso.Picasso;
@@ -27,6 +32,7 @@ import java.net.URL;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Display extends AppCompatActivity {
+    private DatabaseReference mDatabase;
 
 
 
@@ -112,15 +118,28 @@ public class Display extends AppCompatActivity {
 
 
 
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         int filas = getIntent().getIntExtra("fila",1);
         int columnas = getIntent().getIntExtra("columna",1);
         int posX = getIntent().getIntExtra("posX",1);
         int posY = getIntent().getIntExtra("posY",1);
         String img = getIntent().getStringExtra("img");
-
+        String roomName=getIntent().getStringExtra("cuarto");
 
 
         getBitmapFromURL(filas,columnas,posX,posY,img);
+
+        int posicionY=posY--;
+        int posicionX=posX--;
+
+
+        actualizarCuarto(roomName,filas,columnas,posicionX,posicionY,img);
+
+
+
+
 
         final ImageView imagen =  findViewById(R.id.display_IV);
 //
@@ -141,6 +160,23 @@ public class Display extends AppCompatActivity {
 
     }
 
+    private void actualizarCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
+
+        Cuarto cuarto = new Cuarto(filasT, columnasT,posicionX- 1 ,posicionY - 1 , img);
+
+        Map<String,Object> taskMap = new HashMap<String,Object>();
+        taskMap.put("posicionX",posicionX-1);
+        mDatabase.child("Cuartos").child("VRV111").updateChildren(taskMap);
+
+        Map<String,Object> taskMap2 = new HashMap<String,Object>();
+        taskMap2.put("posicionY",posicionY-1);
+        mDatabase.child("Cuartos").child("VRV111").updateChildren(taskMap2);
+
+
+
+
+    }
+
     /**
      * Thread que accede a obtener la imagen y desplegarla en la pantalla.
      */
@@ -151,7 +187,7 @@ public class Display extends AppCompatActivity {
 
             @Override
             protected void onPreExecute() {
-                Toast.makeText(getApplicationContext(),"Filas :"+filas+" columnas "+columnas+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
+
 
             }
 
@@ -181,7 +217,7 @@ public class Display extends AppCompatActivity {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
 
-
+                Toast.makeText(getApplicationContext(),"Filas :"+filas+" columnas "+columnas+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
                 final ImageView imagen =  findViewById(R.id.display_IV);
 
                 int height = bitmap.getHeight()/filas;
@@ -190,7 +226,6 @@ public class Display extends AppCompatActivity {
 //                int width = bitmap.getWidth()/2;
 
                 bitmap = Bitmap.createBitmap(bitmap,posX*width,posY*height,width,height);
-                imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,bitmap.getWidth()*2,bitmap.getHeight(),true));
                 imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,imagen.getWidth(),imagen.getHeight(),true));
 //                bitmap = Bitmap.createBitmap(bitmap,1*width,0*height,width,height);
 

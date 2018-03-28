@@ -28,6 +28,13 @@ public class Cuarto {
         imagen = img;
     }
 
+    public Cuarto(int posX, int posY)
+    {
+        posicionX = posX;
+        posicionY = posY;
+
+    }
+
     public String getRandomCode() {
         return randomCode;
     }
