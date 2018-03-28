@@ -49,14 +49,12 @@ public class Configuracion extends AppCompatActivity {
 
         String usuario = getIntent().getStringExtra("usuario");
 
-        NumberPicker np = (NumberPicker) findViewById(R.id.np);
+
 
         int minimo = 1;
         int maximo = 10;
 
-        np.setMinValue(minimo);
-        np.setMaxValue(maximo);
-        np.setWrapSelectorWheel(true);
+
 
         TextView nombreUsuario = findViewById(R.id.usuarioTV);
         nombreUsuario.setText("¡Bienvenido " + usuario + "!");
@@ -64,16 +62,7 @@ public class Configuracion extends AppCompatActivity {
         foto_gallery = (ImageView)findViewById(R.id.imageView);
         boton = (Button)findViewById(R.id.btnImage);
         boton1 = (Button)findViewById(R.id.btnNext);
-        number = (TextView)findViewById(R.id.txtNumber);
 
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                Toast.makeText(getApplicationContext(), "" + newVal,Toast.LENGTH_LONG).show();
-                number.setText("");
-                number.setText("" + newVal);
-            }
-        });
 
         boton1.setOnClickListener(new View.OnClickListener() {
 
@@ -137,7 +126,7 @@ public class Configuracion extends AppCompatActivity {
         });
 
         boton.setOnClickListener(new View.OnClickListener() {
-            @Override
+
             public void onClick(View view) {
                 openGallery();
             }
