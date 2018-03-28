@@ -3,9 +3,7 @@ package com.cracks.proyectoplataformasmoviles;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,18 +41,11 @@ public class Configuracion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
 
         String usuario = getIntent().getStringExtra("usuario");
-
-
-
-        int minimo = 1;
-        int maximo = 10;
-
-
-
         TextView nombreUsuario = findViewById(R.id.usuarioTV);
         nombreUsuario.setText("¡Bienvenido " + usuario + "!");
 
@@ -63,11 +53,9 @@ public class Configuracion extends AppCompatActivity {
         boton = (Button)findViewById(R.id.btnImage);
         boton1 = (Button)findViewById(R.id.btnNext);
 
-
         boton1.setOnClickListener(new View.OnClickListener() {
 
             ProgressBar progressBar = findViewById(R.id.barraProgreso);
-
 
             @Override
             public void onClick(View view) {
@@ -87,11 +75,9 @@ public class Configuracion extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Toast.makeText(getApplicationContext(), "IMAGEN SUBIDA",Toast.LENGTH_LONG).show();
                         //guardar informacion de imagen en firebase
-                        //salu2
-                        SubirImagen subirImagen= new SubirImagen("Nombre de la imagen",taskSnapshot.getDownloadUrl().toString());
-                        String uploadId=mDatabaseRef.push().getKey();
+
+                        String uploadId = mDatabaseRef.push().getKey();
                         //mDatabaseRef.child(uploadId).setValue(subirImagen);
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);

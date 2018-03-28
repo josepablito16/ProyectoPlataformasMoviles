@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -41,6 +42,7 @@ public class Login extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -84,14 +86,13 @@ public class Login extends AppCompatActivity {
                                 img = cuarto.getImagen();
                                 posX = cuarto.getPosicionX();
                                 posY = cuarto.getPosicionY();
-                                Toast.makeText(getApplicationContext(),"Filas :"+fila+" columnas "+columna+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(Login.this, Display.class);
                                 intent.putExtra("columna",(int)columna);
                                 intent.putExtra("fila",(int) fila);
                                 intent.putExtra("img", img.toString());
                                 intent.putExtra("posX",(int) posX );
                                 intent.putExtra("posY",(int) posY);
-                                intent.putExtra("cuarto",roomText.toString());
+                                intent.putExtra("cuarto",roomText.getText().toString());
 
                                 startActivityForResult(intent, 1);
                             }catch(Exception e){
@@ -111,31 +112,17 @@ public class Login extends AppCompatActivity {
         });
 
 
-
         //Listener de la base de datos
         listener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 FirebaseUser user=mAuth.getCurrentUser();
-
-                if (user==null)
-                {// no esta logeado
-                    Toast.makeText(getApplicationContext(),"NO LOGEADO",Toast.LENGTH_LONG).show();
-
-                }
-                else
-                {
-                    //esta logeado :)
-                    Toast.makeText(getApplicationContext(),"CORRECTO Y LOGEADO",Toast.LENGTH_LONG).show();
-                }
             }
         };
 
         //Inicia la implmementacion si el usuario desea hostear una sesion.
         final CheckBox checkBox = findViewById(R.id.checkBox);
-
-
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -196,11 +183,6 @@ public class Login extends AppCompatActivity {
                         checkBox.setChecked(false);
 
                     }
-                    else
-
-                    {
-
-                    }
 
                 }
                 else
@@ -208,10 +190,26 @@ public class Login extends AppCompatActivity {
                     ingresar();
 
                 }
-
             }
         });
 
+        roomText.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_ENTER:
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -241,8 +239,6 @@ public class Login extends AppCompatActivity {
 
                     continueBtn.setClickable(false);
                     carga.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(),"INICIANDO SESION...",Toast.LENGTH_LONG).show();
-
                 }
 
                 @Override
@@ -261,9 +257,6 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 
                                     estado = "listo";
-
-                                    Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_LONG).show();
-
                                     //Se crea un nuevo intent y se inicia otra pantalla
 
                                     Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
@@ -274,7 +267,7 @@ public class Login extends AppCompatActivity {
                                 } else {
 
                                     estado = "fallo";
-                                    Toast.makeText(getApplicationContext(), "INCORRECTO", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "USERNAME OR PASWORD IS INCORRECT", Toast.LENGTH_LONG).show();
 
                                 }
                             }
@@ -305,7 +298,7 @@ public class Login extends AppCompatActivity {
             cargaLogin.execute();
 
         } else {
-            Toast.makeText(getApplicationContext(), "Por favor llene todos los campos", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please complete all of the fields", Toast.LENGTH_LONG).show();
         }
 
     }
