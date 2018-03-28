@@ -12,7 +12,7 @@
         android:id="@+id/switch_login"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:splitTrack="false"
@@ -53,11 +53,14 @@
             android:id="@+id/username_text"
             android:layout_width="319dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="52dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:textAlignment="center"
             android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_id" />
 
@@ -65,11 +68,14 @@
             android:id="@+id/password_text"
             android:layout_width="314dp"
             android:layout_height="41dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="48dp"
             android:ems="10"
             android:inputType="textPassword"
+            android:textAlignment="center"
             android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
@@ -77,9 +83,9 @@
             android:id="@+id/password_id"
             android:layout_width="wrap_content"
             android:layout_height="21dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="52dp"
             android:text="Password:"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
             android:visibility="visible"
@@ -89,9 +95,8 @@
         <TextView
             android:id="@+id/username_id"
             android:layout_width="wrap_content"
-            android:layout_height="21dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="48dp"
             android:text="Username"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
@@ -144,8 +149,8 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/mensaje_tv"
@@ -200,6 +205,7 @@
             android:text="Welcome!"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@android:color/black"
+            android:textSize="36sp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
