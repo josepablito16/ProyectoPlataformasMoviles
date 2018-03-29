@@ -2,24 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cracks.proyectoplataformasmoviles">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/ic_winseepng"
+        android:label="WinSee"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Login">
             android:label="@string/ProyectoPlataformasMoviles">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Matriz">
             <intent-filter>
@@ -31,18 +27,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".SalaEspera" />
-
-        <activity android:name=".Display"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+        <activity
+            android:name=".Display"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_display">
+            android:label="@string/title_activity_display"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
