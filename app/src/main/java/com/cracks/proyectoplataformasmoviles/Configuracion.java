@@ -47,7 +47,7 @@ public class Configuracion extends AppCompatActivity {
 
         String usuario = getIntent().getStringExtra("usuario");
         TextView nombreUsuario = findViewById(R.id.usuarioTV);
-        nombreUsuario.setText("¡Bienvenido " + usuario + "!");
+        nombreUsuario.setText("Welcome " + usuario + "!");
 
         foto_gallery = (ImageView)findViewById(R.id.imageView);
         boton = (Button)findViewById(R.id.btnImage);
@@ -81,7 +81,6 @@ public class Configuracion extends AppCompatActivity {
                         //mDatabaseRef.child(uploadId).setValue(subirImagen);
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);
-                        intent.putExtra("persona", number.getText());
                         intent.putExtra("url",taskSnapshot.getDownloadUrl().toString());
                         startActivityForResult(intent, 1);
 
