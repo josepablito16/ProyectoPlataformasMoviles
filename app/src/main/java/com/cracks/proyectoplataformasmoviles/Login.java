@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Login extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -88,13 +91,19 @@ public class Login extends AppCompatActivity {
                                 img = cuarto.getImagen();
                                 posX = cuarto.getPosicionX();
                                 posY = cuarto.getPosicionY();
+                                String sala=roomText.getText().toString();
+
+
+                                roomText.setText("");
+
+
                                 Intent intent = new Intent(Login.this, Display.class);
                                 intent.putExtra("columna",(int)columna);
                                 intent.putExtra("fila",(int) fila);
                                 intent.putExtra("img", img.toString());
                                 intent.putExtra("posX",(int) posX );
                                 intent.putExtra("posY",(int) posY);
-                                intent.putExtra("cuarto",roomText.getText().toString());
+                                intent.putExtra("cuarto",sala.toString());
 
                                 startActivityForResult(intent, 1);
                             }catch(Exception e){
@@ -112,6 +121,8 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+
 
 
         //Listener de la base de datos
@@ -218,6 +229,8 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+
 
     private void ingresar()
     {

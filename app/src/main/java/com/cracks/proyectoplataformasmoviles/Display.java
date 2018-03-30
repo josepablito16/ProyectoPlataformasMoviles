@@ -128,13 +128,28 @@ public class Display extends AppCompatActivity {
         String roomName=getIntent().getStringExtra("cuarto");
 
 
-        getBitmapFromURL(filas,columnas,posX,posY,img);
+        if((posX !=0) && (posY !=0))
+        {
+            getBitmapFromURL(filas,columnas,posX,posY,img);
 
-        int posicionY=posY--;
-        int posicionX=posX--;
+            if(posY!=1)
+            {
+                posY--;
+
+            }
+            else if(posY==1)
+            {
+                posX--;
+                posY=columnas;
+
+            }
 
 
-        actualizarCuarto(roomName,filas,columnas,posicionX,posicionY,img);
+
+            actualizarCuarto(roomName,filas,columnas,posX-1,posY-1,img);
+
+        }
+
 
 
 
@@ -161,15 +176,17 @@ public class Display extends AppCompatActivity {
 
     private void actualizarCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
 
-        Cuarto cuarto = new Cuarto(filasT, columnasT,posicionX- 1 ,posicionY - 1 , img);
+        //Cuarto cuarto = new Cuarto(filasT, columnasT,posicionX- 1 ,posicionY - 1 , img);
+        //mDatabase.child("Cuartos").child(roomName).setValue(cuarto);
 
-        Map<String,Object> taskMap = new HashMap<String,Object>();
-        taskMap.put("posicionX",posicionX-1);
-        mDatabase.child("Cuartos").child("VRV111").updateChildren(taskMap);
+        Map<String,Object> taskMap = new HashMap<String, Object>();
+        taskMap.put("posicionX",posicionX);
+        mDatabase.child("Cuartos").child(roomName).updateChildren(taskMap);
 
-        Map<String,Object> taskMap2 = new HashMap<String,Object>();
-        taskMap2.put("posicionY",posicionY-1);
-        mDatabase.child("Cuartos").child("VRV111").updateChildren(taskMap2);
+        Map<String,Object> taskMap2 = new HashMap<String, Object>();
+        taskMap2.put("posicionY",posicionY);
+        mDatabase.child("Cuartos").child(roomName).updateChildren(taskMap2);
+
 
 
 
