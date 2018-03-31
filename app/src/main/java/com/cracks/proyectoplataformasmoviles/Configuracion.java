@@ -60,14 +60,22 @@ public class Configuracion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                progressBar.setVisibility(View.VISIBLE);
-                boton.setClickable(false);
-                boton1.setClickable(false);
+
 
                 //subir imagen a la base de datos
+                if (imageUri == null) {
+                    Toast.makeText(getApplicationContext(), "Ingrese una imagen", Toast.LENGTH_LONG).show();
+
+
+                }
+                else if (imageUri != null){
+                    progressBar.setVisibility(View.VISIBLE);
+                    boton.setClickable(false);
+                    boton1.setClickable(false);
+
 
                 //obtiene la referencia del alamacenamiento
-                StorageReference ref=mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "."+getImageExt(imageUri));
+                StorageReference ref = mStorageRef.child(FB_STORAGE_PATH + System.currentTimeMillis() + "." + getImageExt(imageUri));
 
                 // agregar archivo a referencia
 
@@ -81,31 +89,33 @@ public class Configuracion extends AppCompatActivity {
                         //mDatabaseRef.child(uploadId).setValue(subirImagen);
 
                         Intent intent = new Intent(Configuracion.this, Matriz.class);
-                        intent.putExtra("url",taskSnapshot.getDownloadUrl().toString());
+                        intent.putExtra("url", taskSnapshot.getDownloadUrl().toString());
                         startActivityForResult(intent, 1);
 
                     }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
-                                Toast.makeText(getApplicationContext(),"ERROR UPLOADING IMAGE",Toast.LENGTH_LONG).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                                boton.setClickable(true);
-                                boton1.setClickable(true);
+                        Toast.makeText(getApplicationContext(), "ERROR UPLOADING IMAGE", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                        boton.setClickable(true);
+                        boton1.setClickable(true);
 
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                double progress =(100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-                                progressBar.setProgress((int) progress);
+                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressBar.setProgress((int) progress);
 
-                            }
-                        });
+                    }
+                });
+
+
+            }
+
             }
 
         });

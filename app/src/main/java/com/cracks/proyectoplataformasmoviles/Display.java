@@ -128,27 +128,34 @@ public class Display extends AppCompatActivity {
         String roomName=getIntent().getStringExtra("cuarto");
 
 
-        if((posX !=0) && (posY !=0))
+        if((posX !=-1) && (posY !=-1))
         {
-            getBitmapFromURL(filas,columnas,posX,posY,img);
+            getBitmapFromURL(filas,columnas,posX-1,posY-1,img);
+            //getBitmapFromURL(3,3,0,0,img);
 
-            if(posY!=1)
+
+            if(posY!=0)
             {
                 posY--;
 
             }
-            else if(posY==1)
+            else if(posY==0)
             {
                 posX--;
-                posY=columnas;
+                posY=columnas-1;
 
             }
 
 
 
+
+
+            //actualizarCuarto(roomName,filas,columnas,posX-1,posY-1,img);
             actualizarCuarto(roomName,filas,columnas,posX-1,posY-1,img);
 
         }
+
+
 
 
 

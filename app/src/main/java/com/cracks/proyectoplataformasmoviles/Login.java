@@ -68,6 +68,7 @@ public class Login extends AppCompatActivity {
         final ConstraintLayout layoutPrincipal = findViewById(R.id.principalLayout);
         final Button nextBtn = findViewById(R.id.entrar_btn);
         final Switch sw = findViewById(R.id.switch_login);
+        final EditText passwordText = findViewById(R.id.password_text);
 
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +219,45 @@ public class Login extends AppCompatActivity {
 
                             InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
+                            nextBtn.callOnClick();
+
+
+
+                            return true;
+
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+
+
+
+
+
+
+        passwordText.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_ENTER:
+
+                            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
+
+                            continueBtn.callOnClick();
+
+
                             return true;
 
                         default:
