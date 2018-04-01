@@ -72,6 +72,9 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                InputMethodManager input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                input.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
                 DatabaseReference mDatabase;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 mDatabase = database.getReference("Cuartos");
