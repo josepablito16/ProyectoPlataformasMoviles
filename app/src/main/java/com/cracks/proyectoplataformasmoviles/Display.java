@@ -34,8 +34,6 @@ public class Display extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
 
-
-
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -106,6 +104,12 @@ public class Display extends AppCompatActivity {
         }
     };
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -115,69 +119,45 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
-
-
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        int filas = getIntent().getIntExtra("fila",1);
-        int columnas = getIntent().getIntExtra("columna",1);
-        int posX = getIntent().getIntExtra("posX",1);
-        int posY = getIntent().getIntExtra("posY",1);
+        int filas = getIntent().getIntExtra("fila", 1);
+        int columnas = getIntent().getIntExtra("columna", 1);
+        int posX = getIntent().getIntExtra("posX", 1);
+        int posY = getIntent().getIntExtra("posY", 1);
+
         String img = getIntent().getStringExtra("img");
-        String roomName=getIntent().getStringExtra("cuarto");
+        String roomName = getIntent().getStringExtra("cuarto");
 
+        if ((posX-1 > 0) || (posY-1 > 0)) {
 
-        if((posX !=-1) && (posY !=-1))
-        {
-            getBitmapFromURL(filas,columnas,posX-1,posY-1,img);
-            //getBitmapFromURL(3,3,0,0,img);
+            getBitmapFromURL(filas, columnas, posX - 1, posY - 1, img);
 
+            if (posX != filas || posY != columnas) {
 
-            if(posY==1)
-            {
-                posX--;
+                if (posY == 1) {
 
-            }
-            else
-            {
+                    posX--;
+
+                    if (posX != 1) {
+
+                        posY = columnas;
+                    }
+
+                } else {
+                    posY--;
+                }
+
+            } else {
+
                 posY--;
-                posY=columnas;
-
             }
-
-
-
-
-
-            //actualizarCuarto(roomName,filas,columnas,posX-1,posY-1,img);
-            actualizarCuarto(roomName,filas,columnas,posX-1,posY-1,img);
 
         }
 
+        actualizarCuarto(roomName, filas, columnas, posX, posY, img);
 
-
-
-
-
-
-
-        final ImageView imagen =  findViewById(R.id.display_IV);
-//
-//        Toast.makeText(this, img, Toast.LENGTH_SHORT).show();
-//
-//        String url;
-//        url="https://firebasestorage.googleapis.com/v0/b/proyectoplataformas-6b708.appspot.com/o/image%2F1521555857943.jpg?alt=media&token=385fe6c5-d473-4352-ba7b-eaa6f43dcd35";
-//
-//        Bitmap i = getBitmapFromURL(url);
-//
-//        int height = i.getHeight()/filas;
-//        int width = i.getWidth()/columnas;
-//        i = Bitmap.createBitmap(i,posX*width,posY*height,width,height);
-//        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,i.getWidth()*2,i.getHeight(),true));
-//        imagen.setImageBitmap(Bitmap.createScaledBitmap(i,imagen.getWidth(),imagen.getHeight(),true));
-//
-//        Picasso.with(Display.this).load(url).into(imagen);
+//        ponerImagen();
 
     }
 
@@ -194,34 +174,22 @@ public class Display extends AppCompatActivity {
         taskMap2.put("posicionY",posicionY);
         mDatabase.child("Cuartos").child(roomName).updateChildren(taskMap2);
 
-
-
-
-
     }
 
     /**
      * Thread que accede a obtener la imagen y desplegarla en la pantalla.
      */
-    public void getBitmapFromURL(final int filas, final int columnas,final int posX,final int posY,final String img) {
+    public void getBitmapFromURL(final int filas, final int columnas,final int posX,final int posY,final String img){
 
+        AsyncTask<Void, Void, Bitmap> conseguirImg = new AsyncTask<Void, Void, Bitmap>() {
 
-        AsyncTask<String, Void, Bitmap> conseguirImg = new AsyncTask<String, Void, Bitmap>() {
-
-            @Override
-            protected void onPreExecute() {
-
-
-            }
-
-            @Override
-            protected Bitmap doInBackground(String... strings) {
+            protected Bitmap doInBackground(Void... params) {
 
 
                 Bitmap myBitmap = null;
 
                 try {
-                    
+
                     URL url = new URL(img);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
@@ -240,23 +208,57 @@ public class Display extends AppCompatActivity {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
 
-                Toast.makeText(getApplicationContext(),"Filas :"+filas+" columnas "+columnas+" posX: "+posX+" posY"+posY+" Imagen :"+img,Toast.LENGTH_LONG).show();
-                final ImageView imagen =  findViewById(R.id.display_IV);
+                final ImageView imagen = findViewById(R.id.display_IV);
 
                 int height = bitmap.getHeight()/filas;
                 int width = bitmap.getWidth()/columnas;
-//                int height = bitmap.getHeight()/1;
-//                int width = bitmap.getWidth()/2;
 
                 bitmap = Bitmap.createBitmap(bitmap,posX*width,posY*height,width,height);
                 imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,imagen.getWidth(),imagen.getHeight(),true));
-//                bitmap = Bitmap.createBitmap(bitmap,1*width,0*height,width,height);
 
             }
 
         };
 
         conseguirImg.execute();
+
+//        try {
+//            Thread.sleep(10000);
+//
+//            if (conseguirImg.getStatus() == AsyncTask.Status.FINISHED) {
+//                conseguirImg.cancel(true);
+//            } else {
+//                Toast.makeText(this, "No he terminado :(", Toast.LENGTH_LONG).show();
+//            }
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+
+
+
+        //        final ImageView imagen = findViewById(R.id.display_IV);
+//
+//        Bitmap bitmap = null;
+//        try {
+//            bitmap = new myTask().execute().get();
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//        int height = bitmap.getHeight()/filas;
+//        int width = bitmap.getWidth()/columnas;
+//
+//        bitmap = Bitmap.createBitmap(bitmap,posX*width,posY*height,width,height);
+//        imagen.setImageBitmap(Bitmap.createScaledBitmap(bitmap,imagen.getWidth(),imagen.getHeight(),true));
+
+
     }
 
 
@@ -302,4 +304,88 @@ public class Display extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+
+    private class myTask extends AsyncTask<Void,Void,Bitmap> implements Runnable{
+
+        String img = getIntent().getStringExtra("img");
+
+        protected Bitmap doInBackground(Void... params) {
+
+            Bitmap myBitmap = null;
+
+            try {
+
+                URL url = new URL(img);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                myBitmap = BitmapFactory.decodeStream(input);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+
+            return myBitmap;
+
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+
+            Thread.currentThread().interrupt();
+
+        }
+
+        @Override
+        public void run() {
+
+        }
+    }
+
+    public void ponerImagen(){
+
+        Toast.makeText(this, "EMPEZEMOS :)", Toast.LENGTH_LONG).show();
+
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//        int filas = getIntent().getIntExtra("fila", 1);
+//        int columnas = getIntent().getIntExtra("columna", 1);
+//        int posX = getIntent().getIntExtra("posX", 1);
+//        int posY = getIntent().getIntExtra("posY", 1);
+//
+//        String img = getIntent().getStringExtra("img");
+//        String roomName = getIntent().getStringExtra("cuarto");
+//
+//        if ((posX > 0) && (posY > 0)) {
+//
+//            getBitmapFromURL(filas, columnas, posX - 1, posY - 1, img);
+//
+//            if (posX != filas && posY != columnas) {
+//
+//                if (posY == 1) {
+//                    posX--;
+//
+//                    if (posX != 1) {
+//
+//                        posY = columnas;
+//                    }
+//                } else {
+//                    posY--;
+//                }
+//
+//            } else {
+//
+//                posX--;
+//            }
+//
+//        }
+//
+//        actualizarCuarto(roomName, filas, columnas, posX, posY, img);
+
+    }
+
 }
+
