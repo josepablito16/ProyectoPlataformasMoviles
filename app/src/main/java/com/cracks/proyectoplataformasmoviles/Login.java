@@ -30,9 +30,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Login extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -74,6 +71,9 @@ public class Login extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                InputMethodManager input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                input.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 DatabaseReference mDatabase;
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -180,8 +180,13 @@ public class Login extends AppCompatActivity {
         });
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                InputMethodManager input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                input.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
                 if (checkBox.isChecked())
                 {
                     EditText usernameText = findViewById(R.id.username_text);
@@ -204,6 +209,7 @@ public class Login extends AppCompatActivity {
                     ingresar();
 
                 }
+
             }
         });
 
