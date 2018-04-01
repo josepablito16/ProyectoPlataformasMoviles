@@ -134,15 +134,15 @@ public class Display extends AppCompatActivity {
             //getBitmapFromURL(3,3,0,0,img);
 
 
-            if(posY!=0)
-            {
-                posY--;
-
-            }
-            else if(posY==0)
+            if(posY==1)
             {
                 posX--;
-                posY=columnas-1;
+
+            }
+            else
+            {
+                posY--;
+                posY=columnas;
 
             }
 
