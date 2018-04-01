@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,14 +32,14 @@ private String img;
         final NumberPicker filasNP = (NumberPicker) findViewById(R.id.filasNP);
         final NumberPicker columnasNP = (NumberPicker) findViewById(R.id.columnasNP);
         img=getIntent().getStringExtra("url");
-        filasNP.setMinValue(2);
-        filasNP.setMaxValue(6);
+        filasNP.setMinValue(1);
+        filasNP.setMaxValue(5);
         filasNP.setWrapSelectorWheel(true);
 
         generateCode();
 
-        columnasNP.setMinValue(1);
-        columnasNP.setMaxValue(3);
+        columnasNP.setMinValue(2);
+        columnasNP.setMaxValue(5);
         columnasNP.setWrapSelectorWheel(true);
 
         final Button generarBtn = findViewById(R.id.generar_btn);
@@ -69,6 +68,7 @@ private String img;
             public void onClick(View v) {
 
                 generarBtn.setClickable(false);
+                generarBtn.setEnabled(false);
 
                 String genCode = generateCode();
 
@@ -93,7 +93,6 @@ private String img;
 
     private void writeNewCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
         Cuarto cuarto = new Cuarto(filasT, columnasT,posicionY- 1 ,posicionX - 1 , img);
-        Toast.makeText(getApplicationContext(), img+"",Toast.LENGTH_LONG).show();
 
         mDatabase.child("Cuartos").child(roomName).setValue(cuarto);
     }
