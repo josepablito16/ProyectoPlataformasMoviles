@@ -16,7 +16,7 @@ import java.util.Random;
 public class Matriz extends AppCompatActivity {
 
 private DatabaseReference mDatabase;
-private int columnasT, filasT;
+private int columnasT = 2, filasT = 1;
 String img;
 String genCode;
 
