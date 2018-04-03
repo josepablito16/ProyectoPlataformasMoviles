@@ -13,15 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 //import com.bumptech.glide.Glide;
 //import com.squareup.picasso.Picasso;
@@ -31,7 +26,13 @@ import java.util.Map;
  * status bar and navigation/system bar) with user interaction.
  */
 public class Display extends AppCompatActivity {
-    private DatabaseReference mDatabase;
+    //private DatabaseReference mDatabase;
+
+    int filas;
+    int columnas;
+    int posX;
+    int posY;
+    String img;
 
 
     /**
@@ -104,7 +105,6 @@ public class Display extends AppCompatActivity {
         }
     };
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -119,61 +119,15 @@ public class Display extends AppCompatActivity {
 
         mVisible = true;
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        filas = getIntent().getIntExtra("fila", 1);
+        columnas = getIntent().getIntExtra("columna", 1);
+        posX = getIntent().getIntExtra("posX", 1);
+        posY = getIntent().getIntExtra("posY", 1);
+        img = getIntent().getStringExtra("img");
 
-        int filas = getIntent().getIntExtra("fila", 1);
-        int columnas = getIntent().getIntExtra("columna", 1);
-        int posX = getIntent().getIntExtra("posX", 1);
-        int posY = getIntent().getIntExtra("posY", 1);
+        Toast.makeText(this, "PosX: " + posX + " PosY: " + posY, Toast.LENGTH_SHORT).show();
 
-        String img = getIntent().getStringExtra("img");
-        String roomName = getIntent().getStringExtra("cuarto");
-
-        if ((posX-1 > 0) || (posY-1 > 0)) {
-
-            getBitmapFromURL(filas, columnas, posX - 1, posY - 1, img);
-
-            if (posX != filas || posY != columnas) {
-
-                if (posY == 1) {
-
-                    posX--;
-
-                    if (posX != 1) {
-
-                        posY = columnas;
-                    }
-
-                } else {
-                    posY--;
-                }
-
-            } else {
-
-                posY--;
-            }
-
-        }
-
-        actualizarCuarto(roomName, filas, columnas, posX, posY, img);
-
-//        ponerImagen();
-
-    }
-
-    private void actualizarCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
-
-        //Cuarto cuarto = new Cuarto(filasT, columnasT,posicionX- 1 ,posicionY - 1 , img);
-        //mDatabase.child("Cuartos").child(roomName).setValue(cuarto);
-
-        Map<String,Object> taskMap = new HashMap<String, Object>();
-        taskMap.put("posicionX",posicionX);
-        mDatabase.child("Cuartos").child(roomName).updateChildren(taskMap);
-
-        Map<String,Object> taskMap2 = new HashMap<String, Object>();
-        taskMap2.put("posicionY",posicionY);
-        mDatabase.child("Cuartos").child(roomName).updateChildren(taskMap2);
-
+        getBitmapFromURL(filas, columnas, posX - 1, posY - 1, img);
     }
 
     /**
@@ -261,7 +215,6 @@ public class Display extends AppCompatActivity {
 
     }
 
-
     private void toggle() {
         if (mVisible) {
             hide();
@@ -305,7 +258,6 @@ public class Display extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-
     private class myTask extends AsyncTask<Void,Void,Bitmap> implements Runnable{
 
         String img = getIntent().getStringExtra("img");
@@ -345,7 +297,7 @@ public class Display extends AppCompatActivity {
         }
     }
 
-    public void ponerImagen(){
+    public void ponerImagen1(){
 
         Toast.makeText(this, "EMPEZEMOS :)", Toast.LENGTH_LONG).show();
 
@@ -386,6 +338,11 @@ public class Display extends AppCompatActivity {
 //        actualizarCuarto(roomName, filas, columnas, posX, posY, img);
 
     }
+
+    public void ponerImagen(){
+
+        getBitmapFromURL(filas, columnas, posX, posY, img);
+}
 
 }
 

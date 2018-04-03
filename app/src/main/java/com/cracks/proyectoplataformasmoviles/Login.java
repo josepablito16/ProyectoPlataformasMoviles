@@ -98,7 +98,7 @@ public class Login extends AppCompatActivity {
                                 roomText.setText("");
 
 
-                                Intent intent = new Intent(Login.this, Display.class);
+                                Intent intent = new Intent(Login.this, SalaEspera.class);
                                 intent.putExtra("columna",(int)columna);
                                 intent.putExtra("fila",(int) fila);
                                 intent.putExtra("img", img.toString());
@@ -324,7 +324,7 @@ public class Login extends AppCompatActivity {
                                     estado = "listo";
                                     //Se crea un nuevo intent y se inicia otra pantalla
 
-                                    Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
+                                    Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
                                     nuevoIntent.putExtra("usuario",usernameText.getText().toString());
                                     startActivityForResult(nuevoIntent, 1);
 
