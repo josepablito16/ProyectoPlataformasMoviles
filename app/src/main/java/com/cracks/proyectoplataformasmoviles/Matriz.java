@@ -17,8 +17,8 @@ public class Matriz extends AppCompatActivity {
 
 private DatabaseReference mDatabase;
 private int columnasT, filasT;
-private String img;
-
+String img;
+String genCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +70,12 @@ private String img;
                 generarBtn.setClickable(false);
                 generarBtn.setEnabled(false);
 
-                String genCode = generateCode();
+                genCode = generateCode();
 
                 writeNewCuarto(genCode, filasT, columnasT, filasT, columnasT, img);
                 codigoTV.setText(genCode);
+
+                empezarBtn.setEnabled(true);
 
             }
         });
@@ -82,17 +84,24 @@ private String img;
             @Override
             public void onClick(View view) {
 
-                Intent nuevoIntent = new Intent(Matriz.this, Display.class);
-                nuevoIntent.putExtra("filas", filasT);
-                nuevoIntent.putExtra("columnas",columnasT);
+                System.out.println("Los valores que mando son posX: " + columnasT + " posY: " + filasT + " img: " + img + " cuarto: " + codigoTV.getText().toString());
+
+                Intent nuevoIntent = new Intent(Matriz.this, SalaEspera.class);
+                nuevoIntent.putExtra("fila", filasT);
+                nuevoIntent.putExtra("columna",columnasT);
+                nuevoIntent.putExtra("posX",columnasT);
+                nuevoIntent.putExtra("posY",filasT);
+                nuevoIntent.putExtra("cuarto",codigoTV.getText().toString());
+                nuevoIntent.putExtra("img",img.toString());
                 startActivityForResult(nuevoIntent, 1);
+
             }
         });
 
     }
 
     private void writeNewCuarto(String roomName, int filasT, int columnasT, int posicionX, int posicionY, String img){
-        Cuarto cuarto = new Cuarto(filasT, columnasT,posicionY- 1 ,posicionX - 1 , img);
+        Cuarto cuarto = new Cuarto(filasT, columnasT,posicionY ,posicionX, img);
 
         mDatabase.child("Cuartos").child(roomName).setValue(cuarto);
     }

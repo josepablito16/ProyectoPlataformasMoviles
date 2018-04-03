@@ -101,40 +101,8 @@ public class SalaEspera extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                if ((posX > 0) || (posY > 0)) {
-//
-//                    if (posX != filas || posY != columnas) {
-//
-//                        if (posY == 1) {
-//
-//                            posX--;
-//
-//                            if (posX != 1) {
-//
-//                                posY = columnas;
-//                            }
-//
-//                        } else {
-//                            posY--;
-//                        }
-//
-//                    } else {
-//
-//                        posY--;
-//                    }
-//                }
-//
-//                actualizarCuarto(roomName, filas, columnas, posX,posY, img);
-//
-//                Intent intent = new Intent(SalaEspera.this, Display.class);
-//                intent.putExtra("columna", (int) columnas);
-//                intent.putExtra("fila", (int) filas);
-//                intent.putExtra("posX", (int) posicionX);
-//                intent.putExtra("posY", (int) posicionY);
-//                intent.putExtra("img", img);
-//
-//                startActivityForResult(intent, 1);
-
+                Intent intent = new Intent(SalaEspera.this, Login.class);
+                startActivityForResult(intent, 1);
             }
 
         });
