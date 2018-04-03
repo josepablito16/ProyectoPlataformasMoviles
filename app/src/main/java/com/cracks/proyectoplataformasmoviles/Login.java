@@ -42,6 +42,8 @@ public class Login extends AppCompatActivity {
     int posX;
     int posY;
 
+    boolean control = true;
+
     protected void onCreate(Bundle savedInstanceState) {
 
         getSupportActionBar().hide();
@@ -53,7 +55,6 @@ public class Login extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         //Variables / objetos que no se usan.
         TextView usernameTV = findViewById(R.id.username_id);
-        TextView passwordTV = findViewById(R.id.password_id);
         TextView welcomeTV = findViewById(R.id.welcome_tv);
         TextView mensajeTV = findViewById(R.id.mensaje_tv);
         final EditText roomText = findViewById(R.id.room_text);
@@ -81,33 +82,44 @@ public class Login extends AppCompatActivity {
 
                 try{
                     mDatabase.child(roomText.getText().toString()).addValueEventListener(new ValueEventListener() {
+
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             try{
-                                Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
 
-                                columna = cuarto.getColumnasT();
-                                fila = cuarto.getFilasT();
-                                img = cuarto.getImagen();
-                                posX = cuarto.getPosicionX();
-                                posY = cuarto.getPosicionY();
-                                String sala=roomText.getText().toString();
+                                if (control) {
+
+                                    System.out.println("INTENT DESDE LOGIN");
+                                    control = false;
+
+                                    Cuarto cuarto = dataSnapshot.getValue(Cuarto.class);
+
+                                    columna = cuarto.getColumnasT();
+                                    fila = cuarto.getFilasT();
+                                    img = cuarto.getImagen();
+                                    posX = cuarto.getPosicionX();
+                                    posY = cuarto.getPosicionY();
+                                    String sala = roomText.getText().toString();
 
 
-                                roomText.setText("");
+                                    roomText.setText("");
 
 
-                                Intent intent = new Intent(Login.this, SalaEspera.class);
-                                intent.putExtra("columna",(int)columna);
-                                intent.putExtra("fila",(int) fila);
-                                intent.putExtra("img", img.toString());
-                                intent.putExtra("posX",(int) posX );
-                                intent.putExtra("posY",(int) posY);
-                                intent.putExtra("cuarto",sala.toString());
+                                    Intent intent = new Intent(Login.this, SalaEspera.class);
+                                    intent.putExtra("columna", (int) columna);
+                                    intent.putExtra("fila", (int) fila);
+                                    intent.putExtra("img", img.toString());
+                                    intent.putExtra("posX", (int) posX);
+                                    intent.putExtra("posY", (int) posY);
+                                    intent.putExtra("cuarto", sala.toString());
 
-                                startActivityForResult(intent, 1);
+                                    startActivityForResult(intent, 1);
+
+                                }
+
                             }catch(Exception e){
+
                                 Toast.makeText(getApplicationContext(),"There's no room: " + roomText.getText().toString(),Toast.LENGTH_LONG).show();
                             }
                         }
@@ -122,8 +134,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
-
 
 
         //Listener de la base de datos
@@ -324,7 +334,7 @@ public class Login extends AppCompatActivity {
                                     estado = "listo";
                                     //Se crea un nuevo intent y se inicia otra pantalla
 
-                                    Intent nuevoIntent = new Intent(Login.this, SalaEspera.class);
+                                    Intent nuevoIntent = new Intent(Login.this, Configuracion.class);
                                     nuevoIntent.putExtra("usuario",usernameText.getText().toString());
                                     startActivityForResult(nuevoIntent, 1);
 

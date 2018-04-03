@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +26,7 @@ public class SalaEspera extends AppCompatActivity {
     //Variables sin actualizar que el usuario va a desplegar:
     int posicionX;
     int posicionY;
-
+    boolean control = true;
 
 
     @Override
@@ -48,44 +49,91 @@ public class SalaEspera extends AppCompatActivity {
         posicionX = posX;
         posicionY = posY;
 
+        if ((posX > 0) && (posY > 0)) {
+
+            if (posX != filas || posY != columnas) {
+
+                if (posY == 1) {
+
+                    posX--;
+
+                    if (posX != 1) {
+
+                        posY = columnas;
+                    }
+
+                } else {
+                    posY--;
+                }
+
+            } else {
+
+                posY--;
+            }
+
+        } else {
+
+            control = false;
+
+        }
+
+        if (control) {
+
+            actualizarCuarto(roomName, filas, columnas, posX, posY, img);
+
+            Intent intent = new Intent(SalaEspera.this, Display.class);
+            intent.putExtra("columna", (int) columnas);
+            intent.putExtra("fila", (int) filas);
+            intent.putExtra("posX", (int) posicionX);
+            intent.putExtra("posY", (int) posicionY);
+            intent.putExtra("img", img);
+
+            startActivityForResult(intent, 1);
+
+        } else {
+
+            Toast.makeText(this, "There's no more space in this room", Toast.LENGTH_SHORT).show();
+
+        }
+
         startBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if ((posX > 0) || (posY > 0)) {
-
-                    if (posX != filas || posY != columnas) {
-
-                        if (posY == 1) {
-
-                            posX--;
-
-                            if (posX != 1) {
-
-                                posY = columnas;
-                            }
-
-                        } else {
-                            posY--;
-                        }
-
-                    } else {
-
-                        posY--;
-                    }
-                }
-
-                actualizarCuarto(roomName, filas, columnas, posX,posY, img);
-
-                Intent intent = new Intent(SalaEspera.this, Display.class);
-                intent.putExtra("columna", (int) columnas);
-                intent.putExtra("fila", (int) filas);
-                intent.putExtra("posX", (int) posicionX);
-                intent.putExtra("posY", (int) posicionY);
-                intent.putExtra("img", img);
-
-                startActivityForResult(intent, 1);
+//                if ((posX > 0) || (posY > 0)) {
+//
+//                    if (posX != filas || posY != columnas) {
+//
+//                        if (posY == 1) {
+//
+//                            posX--;
+//
+//                            if (posX != 1) {
+//
+//                                posY = columnas;
+//                            }
+//
+//                        } else {
+//                            posY--;
+//                        }
+//
+//                    } else {
+//
+//                        posY--;
+//                    }
+//                }
+//
+//                actualizarCuarto(roomName, filas, columnas, posX,posY, img);
+//
+//                Intent intent = new Intent(SalaEspera.this, Display.class);
+//                intent.putExtra("columna", (int) columnas);
+//                intent.putExtra("fila", (int) filas);
+//                intent.putExtra("posX", (int) posicionX);
+//                intent.putExtra("posY", (int) posicionY);
+//                intent.putExtra("img", img);
+//
+//                startActivityForResult(intent, 1);
 
             }
 
